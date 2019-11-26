@@ -88,5 +88,17 @@ namespace Roleplay.Housesystem
         {
             Housesystem.API.CreateHouse(c, platz, interior, cost);
         }
+
+        [Command("rhouse")]
+        public void RentHouse(Client c)
+        {
+            
+        }
+
+        [Command("urhouse")]
+        public void UnrentHouse(Client c)
+        {
+
+        }
     }
 }

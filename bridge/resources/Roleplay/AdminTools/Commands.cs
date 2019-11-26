@@ -525,38 +525,20 @@ namespace Roleplay.AdminTools
         }
 
         [Command("upthash")]
-        public void HandleUptHash(Client c)
+        public void HandleUptHash(Client c, string vehName)
         {
             if (!PermissionAPI.API.HasPermission(c, 4))
                 return;
 
-            MySqlConnection conn = DatabaseAPI.API.GetInstance().GetConnection();
+            uint hash = NAPI.Util.GetHashKey(vehName);
+
             MySqlConnection connWrite = DatabaseAPI.API.GetInstance().GetConnection();
 
-            MySqlCommand cmd = new MySqlCommand("SELECT name FROM cfg_vehicles", conn);
+            MySqlCommand cmdWrite = new MySqlCommand("INSERT INTO cfg_vehicles (name, hash) VALUES (@name, @hash)", connWrite);
+            cmdWrite.Parameters.AddWithValue("@hash", hash);
+            cmdWrite.Parameters.AddWithValue("@name", vehName);
+            cmdWrite.ExecuteNonQuery();
 
-            MySqlDataReader r = cmd.ExecuteReader();
-            while (r.Read())
-            {
-                string name = r.GetString("name");
-                uint hash = NAPI.Util.GetHashKey(name);
-                uint currentHash = r.GetUInt32("hash");
-
-                if (r.GetString("name").Equals("police3"))
-                    c.SendChatMessage("Hash Police3: " + hash);
-
-                if (hash != currentHash)
-                {
-                    MySqlCommand cmdWrite = new MySqlCommand("INSERT INTO cfg_vehicles (name, hash) VALUES (@name, @hash) ON DUPLICATE KEY UPDATE hash = @hash2 WHERE name = @name", connWrite);
-                    cmdWrite.Parameters.AddWithValue("@hash", hash);
-                    cmdWrite.Parameters.AddWithValue("@hash2", hash);
-                    cmdWrite.Parameters.AddWithValue("@name", name);
-                    cmdWrite.ExecuteNonQuery();
-                }
-            }
-            r.Close();
-
-            DatabaseAPI.API.GetInstance().FreeConnection(conn);
             DatabaseAPI.API.GetInstance().FreeConnection(connWrite);
         }
 

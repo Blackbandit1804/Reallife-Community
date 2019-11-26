@@ -39,7 +39,7 @@ namespace Roleplay.Housesystem
         {
             foreach (House houseModel in houseList)
             {
-                while (c.Dimension == houseModel.id)
+                while (c.Position.DistanceTo2D(houseModel.position) < 5 || c.Dimension == houseModel.id)
                 {
                     if (houseModel.owner == c.Name)
                     {
@@ -61,11 +61,24 @@ namespace Roleplay.Housesystem
 
             foreach (House houseModel in houseList)
             {
-                while (c.Dimension == houseModel.id)
+                while (c.Position.DistanceTo2D(houseModel.position) < 5 || c.Dimension == houseModel.id)
                 {
                     if (houseModel.status == 2)
                     {
+                        if (c.GetData("h_key") != 0)
+                        {
+                            c.SendNotification("Du besitzt bereits ein Haus!");
+                            return;
+                        }
+
+                        if (c.GetData("money_cash") <= houseModel.price)
+                        {
+                            c.SendNotification("Dein Geld reicht dafür nicht aus!");
+                            return;
+                        }
+
                         FinishBuyHouse(c, houseModel.id);
+                        MoneyAPI.API.SubCash(c, houseModel.price);
                         c.SendChatMessage("Haus gekauft!");
                         Log.WriteS($"Spieler {c.Name} hat das Haus mit folgender ID gekauft: {houseModel.id}");
                     }
@@ -95,7 +108,7 @@ namespace Roleplay.Housesystem
             cmd.Parameters.AddWithValue("@hkey", 0);
             cmd.ExecuteNonQuery();
 
-            c.ResetData("h_key");
+            c.SetData("h_key", 0);
 
             DatabaseAPI.API.GetInstance().FreeConnection(conn);
 

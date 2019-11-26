@@ -96,6 +96,9 @@ namespace Roleplay.Init
             Vehicles.InitNew.SpawnAllfVeh();
 
             Log.WriteM("Starting Sync Thread");
+            Log.WriteS("Server time: " + DateTime.Now);
+            NAPI.World.SetTime(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+
             Task.Run(() =>
             {
                 while (true)
@@ -143,6 +146,21 @@ namespace Roleplay.Init
                     updateVehicles.Wait();
                     updateFVehicles.Wait();
                     Log.WriteM("Saving Vehicles and Players [DONE]");
+                }
+            });
+
+            Task.Run(() =>
+            {
+                while (true)
+                {
+                    Task.Delay(1000 * 60 * 1).Wait();
+                    Task updatedatetime = Task.Run(() =>
+                    {
+                        NAPI.World.SetTime(DateTime.Now.Hour, DateTime.Now.Minute,DateTime.Now.Second);
+                        Log.WriteS("Zeit wurde angepasst!");
+                    });
+
+                    updatedatetime.Wait();
                 }
             });
 
