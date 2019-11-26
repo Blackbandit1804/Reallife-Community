@@ -715,5 +715,17 @@ namespace Roleplay.Vehicles
             }
             
         }
+
+        [RemoteEvent("syncSirens")]
+        public void VehSirenSync(Client c)
+        {
+            if (c.Vehicle.HasSharedData("silentMode") && c.Vehicle.GetSharedData("silentMode") == true)
+            {
+                c.Vehicle.SetSharedData("silentMode", false);
+            } else
+            {
+                c.Vehicle.SetSharedData("silentMode", true);
+            }
+        }
     }
 }
