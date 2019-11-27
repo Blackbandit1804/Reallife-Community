@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Nick\\Desktop\\Reallife-Community-master\\bridge\\resources\\Roleplay\\Roleplay.csproj": {}
+    "C:\\Users\\Nick\\Desktop\\Backup\\Reallife-Community\\bridge\\resources\\Roleplay\\Roleplay.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Nick\\Desktop\\Reallife-Community-master\\bridge\\resources\\Roleplay\\Roleplay.csproj": {
+    "C:\\Users\\Nick\\Desktop\\Backup\\Reallife-Community\\bridge\\resources\\Roleplay\\Roleplay.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Nick\\Desktop\\Reallife-Community-master\\bridge\\resources\\Roleplay\\Roleplay.csproj",
+        "projectUniqueName": "C:\\Users\\Nick\\Desktop\\Backup\\Reallife-Community\\bridge\\resources\\Roleplay\\Roleplay.csproj",
         "projectName": "Roleplay",
-        "projectPath": "C:\\Users\\Nick\\Desktop\\Reallife-Community-master\\bridge\\resources\\Roleplay\\Roleplay.csproj",
+        "projectPath": "C:\\Users\\Nick\\Desktop\\Backup\\Reallife-Community\\bridge\\resources\\Roleplay\\Roleplay.csproj",
         "packagesPath": "C:\\Users\\Nick\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Nick\\Desktop\\Reallife-Community-master\\bridge\\resources\\Roleplay\\obj\\",
+        "outputPath": "C:\\Users\\Nick\\Desktop\\Backup\\Reallife-Community\\bridge\\resources\\Roleplay\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Nick\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -201,6 +201,11 @@ namespace Roleplay.Init
                 Jobs.Main.DeleteJobVehicle(c, c.Vehicle);
             }
 
+            if (c.HasData("cuffed"))
+            {
+                Player.PlayerUpdate.UpdatePlayerWanteds(c, true, 2);
+            }
+
             switch (type)
             {
                 case DisconnectionType.Left:
@@ -224,6 +229,8 @@ namespace Roleplay.Init
         [ServerEvent(Event.PlayerDeath)]
         public void OnPlayerDeath(Client c, Client killer, uint reason)
         {
+            c.SetData("death", true);
+
             if (c.HasData("InJob"))
             {
                 Jobs.Main.DeleteJobVehicle(c, c.Vehicle);
@@ -250,20 +257,36 @@ namespace Roleplay.Init
                     c.SendChatMessage($"Du wurdest von {killer.Name} getötet!");
                 }
 
-                Blip PlayerDeathBlip = NAPI.Blip.CreateBlip(84, c.Position, 1, 4, c.Name);
-
-                NAPI.Task.Run(() =>
+                foreach (Client saru in NAPI.Pools.GetAllPlayers())
                 {
-                    PlayerDeathBlip.Delete();
-                }, delayTime: 120000);
+                    if (Fraktionssystem.API.WhichFrak(saru, 2) && saru.HasData("onduty"))
+                    {
+                        Blip PlayerDeathBlip = NAPI.Blip.CreateBlip(84, c.Position, 1, 4, c.Name);
+
+                        c.SetData("deathblip", PlayerDeathBlip);
+
+                        NAPI.Task.Run(() =>
+                        {
+                            if (c.HasData("deathblip"))
+                            {
+                                PlayerDeathBlip.Delete();
+                                c.ResetData("deathblip");
+                            }
+                        }, delayTime: 120000);
+                    }
+                }
 
                 c.TriggerEvent("DeathTrue");
 
                 NAPI.Task.Run(() =>
                 {
-                    NAPI.Player.SpawnPlayer(c, new Vector3(355.9892, -597.8624, 28.77746));
-                    c.SendNotification("Du wurdest respawnt!");
-                    c.TriggerEvent("DeathFalse");
+                    if (c.HasData("death"))
+                    {
+                        NAPI.Player.SpawnPlayer(c, new Vector3(355.9892, -597.8624, 28.77746));
+                        c.SendNotification("Du wurdest respawnt!");
+                        c.TriggerEvent("DeathFalse");
+                        c.ResetData("death");
+                    }
                 }, delayTime: 120000);
             }
         }

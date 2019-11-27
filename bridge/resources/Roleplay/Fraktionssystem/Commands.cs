@@ -160,19 +160,58 @@ namespace Roleplay.Fraktionssystem
             }
             else
             {
-                c.SendNotification("Spieler nicht in Reichweite!");
+                c.SendNotification("Spieler ist nicht in Reichweite!");
             }
 
         }
         #endregion
 
         #region LSMD
+        [Command("revive")]
+        public void RevivePlayer(Client c, Client p)
+        {
+            if (!Fraktionssystem.API.WhichFrak(c, 2))
+                return;
+
+            if (!p.HasData("death"))
+            {
+                c.SendNotification("Der Spieler muss nicht reanimiert werden!");
+                return;
+            }
+
+            if (c.Position.DistanceTo2D(p.Position) > 5)
+            {
+                c.SendNotification("Der Spieler befindet sich nicht in der Nähe!");
+                return;
+            }
+
+            NAPI.Player.SpawnPlayer(p, c.Position);
+            c.Health = 50;
+
+            p.TriggerEvent("DeathFalse");
+
+            p.ResetData("death");
+
+            Blip PlayerDeathBlip = p.GetData("deathblip");
+            PlayerDeathBlip.Delete();
+            c.ResetData("deathblip");
+
+            p.SendNotification("[~r~SARU~w~] Du wurdest wiederbelebt!");
+            c.SendNotification($"[~r~SARU~w~] Du hast den Spieler {p.Name} wiederbelebt!");
+
+            MoneyAPI.API.SubCash(p, 150);
+            MoneyAPI.API.AddCash(c, 250);
+        }
+
         [Command("heal")]
         public void HealPlayer(Client c, Client p)
         {
-            if (!c.IsInVehicle || !p.IsInVehicle)
+            if (!Fraktionssystem.API.WhichFrak(c, 2))
+                return;
+
+            if (!c.IsInVehicle || !p.IsInVehicle || c.Vehicle != p.Vehicle)
             {
-                c.SendNotification("Der Veletzte und du müssen im RTW sitzen um ihn zu verarzten.");
+                c.SendNotification("Die Veletzte Person und du müssen im RTW sitzen.");
                 return;
             }
 
@@ -180,7 +219,7 @@ namespace Roleplay.Fraktionssystem
             {
                 p.Health = 100;
                 c.SendNotification($"Du hast den Spieler {p.Name} verarztet.");
-                c.SendNotification($"Du wurde von {c.Name} verarztet.");
+                c.SendNotification($"Du wurdest von {c.Name} verarztet.");
             } else
             {
                 c.SendNotification("Der Spieler ist zu weit entfernt!");
