@@ -137,6 +137,7 @@ namespace Roleplay.Login
             c.SetData("vehicles", r.GetInt32("vehicles"));
             c.SetData("PlayerPaydayTimer", r.GetInt32("payday"));
             c.SetData("createdc", r.GetBoolean("created"));
+            c.SetData("jailtime", r.GetInt32("jailtime"));
 
             c.Name = r.GetString("first_name") + r.GetString("last_name");
             r.Close();

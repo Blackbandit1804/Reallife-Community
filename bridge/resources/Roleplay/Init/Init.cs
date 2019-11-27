@@ -259,7 +259,7 @@ namespace Roleplay.Init
 
                 foreach (Client saru in NAPI.Pools.GetAllPlayers())
                 {
-                    if (Fraktionssystem.API.WhichFrak(saru, 2) && saru.HasData("onduty"))
+                    if (saru.GetData("fraktion") == 2 && saru.HasData("onduty"))
                     {
                         Blip PlayerDeathBlip = NAPI.Blip.CreateBlip(84, c.Position, 1, 4, c.Name);
 
@@ -282,7 +282,14 @@ namespace Roleplay.Init
                 {
                     if (c.HasData("death"))
                     {
-                        NAPI.Player.SpawnPlayer(c, new Vector3(355.9892, -597.8624, 28.77746));
+                        if (c.GetData("jailtime") != 0)
+                        {
+                            NAPI.Player.SpawnPlayer(c, new Vector3(1729.212, 2563.543, 45.56488));
+                        } else
+                        {
+                            NAPI.Player.SpawnPlayer(c, new Vector3(355.9892, -597.8624, 28.77746));
+                        }
+
                         c.SendNotification("Du wurdest respawnt!");
                         c.TriggerEvent("DeathFalse");
                         c.ResetData("death");

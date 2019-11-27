@@ -50,6 +50,9 @@ namespace Roleplay.AdminTools
         [Command("tveh")]
         public void TestVehSpawn(Client c, string fahrzeug_model)
         {
+            if (!PermissionAPI.API.HasPermission(c, 1))
+                return;
+
             uint hash = NAPI.Util.GetHashKey(fahrzeug_model);
             Vehicle veh = NAPI.Vehicle.CreateVehicle(hash, c.Position, c.Rotation.Z, 0, 0, "ADMINVEH");
             c.SetIntoVehicle(veh, -1);

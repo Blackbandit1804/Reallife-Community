@@ -108,18 +108,65 @@ namespace Roleplay.Fraktionssystem
             }
         }
 
-        [Command("marke")]
-        public void pMarke(Client c, Client p)
+        [Command("arrest")]
+        public void PlayerArrest(Client c, Client p)
         {
             if (!Fraktionssystem.API.WhichFrak(c, 1))
                 return;
 
-            p.TriggerEvent("dienstmarke", c);
-
-            NAPI.Task.Run(() =>
+            if (!c.IsInVehicle)
             {
-                p.TriggerEvent("dienstmarked", c);
-            }, delayTime: 7000);
+                c.SendNotification("Du bist in keinem Fahrzeug!");
+                return;
+            }
+
+            if (c.Vehicle != p.Vehicle)
+            {
+                c.SendNotification("Der Spieler ist nicht in deinem Fahrzeug!");
+                return;
+            }
+
+            if (p.GetData("wanteds") == 0)
+            {
+                c.SendNotification("Der Spieler wird aktuell nicht gesucht!");
+                return;
+            }
+
+            if (c.Position.DistanceTo2D(new Vector3(1690.748, 2608.409, 45.82283)) > 5)
+            {
+                c.SendNotification("Du bist nicht in der Nähe.");
+            }
+
+            Player.PlayerUpdate.UpdatePlayerJailtime(p, p.GetData("wanteds") * 3);
+            Player.PlayerUpdate.UpdatePlayerWanteds(p, false, p.GetData("wanteds"));
+
+            p.SendNotification("Du wurdest verhaftet!");
+            p.SendNotification($"Du bist nun für {p.GetData("jailtime")} Minuten im Gefängnis!");
+            c.SendNotification($"Du hast den Spieler {p.Name} festgenommen!");
+
+            p.Position = new Vector3(1729.212, 2563.543, 45.56488);
+            p.Rotation = new Vector3(186.1379,0,0);
+        }
+
+        [RemoteEvent("ShowPlayerDienstAusweis")]
+        public void pMarke(Client c)
+        {
+            foreach (Client target in NAPI.Pools.GetAllPlayers())
+            {
+                if (c.Equals(target)) continue;
+                if (Init.Init.IsInRangeOfPoint(c.Position, new Vector3(target.Position.X, target.Position.Y, target.Position.Z), 1f))
+                {
+                    if (target.Name == c.Name)
+                        return;
+
+                    target.TriggerEvent("dienstmarke", c);
+
+                    NAPI.Task.Run(() =>
+                    {
+                        target.TriggerEvent("dienstmarked", c);
+                    }, delayTime: 7000);
+                }
+            }
         }
 
         [Flags]
@@ -166,7 +213,7 @@ namespace Roleplay.Fraktionssystem
         }
         #endregion
 
-        #region LSMD
+        #region LSMS
         [Command("revive")]
         public void RevivePlayer(Client c, Client p)
         {
@@ -186,7 +233,7 @@ namespace Roleplay.Fraktionssystem
             }
 
             NAPI.Player.SpawnPlayer(p, c.Position);
-            c.Health = 50;
+            p.Health = 50;
 
             p.TriggerEvent("DeathFalse");
 
@@ -196,8 +243,8 @@ namespace Roleplay.Fraktionssystem
             PlayerDeathBlip.Delete();
             c.ResetData("deathblip");
 
-            p.SendNotification("[~r~SARU~w~] Du wurdest wiederbelebt!");
-            c.SendNotification($"[~r~SARU~w~] Du hast den Spieler {p.Name} wiederbelebt!");
+            p.SendNotification("[~r~LSMS~w~] Du wurdest wiederbelebt!");
+            c.SendNotification($"[~r~LSMS~w~] Du hast den Spieler {p.Name} wiederbelebt!");
 
             MoneyAPI.API.SubCash(p, 150);
             MoneyAPI.API.AddCash(c, 250);
@@ -219,7 +266,7 @@ namespace Roleplay.Fraktionssystem
             {
                 p.Health = 100;
                 c.SendNotification($"Du hast den Spieler {p.Name} verarztet.");
-                c.SendNotification($"Du wurdest von {c.Name} verarztet.");
+                p.SendNotification($"Du wurdest von {c.Name} verarztet.");
             } else
             {
                 c.SendNotification("Der Spieler ist zu weit entfernt!");

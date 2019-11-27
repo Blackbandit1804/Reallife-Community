@@ -57,43 +57,22 @@ namespace Roleplay.Fraktionssystem
                 return;
             }
 
-            p.SetData("finvite", true);
+            p.SetData("finvite", c);
 
             c.SendNotification($"~g~Spieler ~w~{p.Name}~g~ wurde in die Fraktion eingeladen!");
-            p.SendNotification($"~g~Du wurdest in die Fraktion" + Frakranknames[(c.GetData("fraktion") > Frakranknames.Length) ? 0 : c.GetData("fraktion")] + " eingeladen!");
+            p.SendNotification($"~g~Du wurdest in die Fraktion " + Frakranknames[(c.GetData("fraktion") > Frakranknames.Length) ? 0 : c.GetData("fraktion")] + " eingeladen!");
             p.SendNotification("Nutze '~g~/accept~w~' um die Einladung anzunehmen.");
 
             NAPI.Task.Run(() =>
             {
-                if (!p.HasData("acceptinvite"))
+                if (p.HasData("finvite"))
                 {
                     c.SendNotification("Spieler hat die Einladung ~r~NICHT~w~ angenommen!");
                     p.SendNotification("Du hast die Einladung ~r~NICHT~w~ angenommen!");
                     p.ResetData("finvite");
                     return;
                 }
-
-                MySqlConnection conn = DatabaseAPI.API.GetInstance().GetConnection();
-
-                MySqlCommand cmd = conn.CreateCommand();
-
-                cmd.CommandText = "UPDATE characters SET fraktion = @frak, fraktionrank = @frank WHERE id = @pid";
-                cmd.Parameters.AddWithValue("@pid", p.GetData("character_id"));
-                cmd.Parameters.AddWithValue("@frak", c.GetData("fraktion"));
-                cmd.Parameters.AddWithValue("@frank", 1);
-                cmd.ExecuteNonQuery();
-
-                DatabaseAPI.API.GetInstance().FreeConnection(conn);
-
-                p.SetData("fraktion", c.GetData("fraktion"));
-                p.SetData("fraktionrank", 1);
-
-                c.SendNotification($"~g~Spieler ~w~{p.Name}~g~ hat die Einladung akzeptiert!");
-                p.SendNotification($"~g~Du bist nun Mitglied bei der " + Frakranknames[(c.GetData("fraktion") > Frakranknames.Length) ? 0 : c.GetData("fraktion")] + "!");
-
-                p.ResetData("finvite");
-                p.ResetData("acceptinvite");
-            }, delayTime: 7000);
+            }, delayTime: 10000);
         }
 
         public static void fUninvite(Client c, Client p)

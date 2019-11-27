@@ -8,51 +8,6 @@ namespace Roleplay.Player
 {
     class Commands : Script
     {
-        [Command("park")]
-        public void ParkOwnVehicle(Client c)
-        {
-            Vehicle v = c.Vehicle;
-
-            if (!c.IsInVehicle)
-            {
-                c.SendNotification("Du bist in keinem Fahrzeug!");
-                return;
-            }
-
-            if (!v.HasData("id"))
-            {
-                c.SendNotification("Dieses Fahrzeug kannst du nicht parken!");
-                return;
-            }
-
-            if (v.GetData("owner") != c.GetData("character_id"))
-            {
-                c.SendNotification("Dieses Fahrzeug gehört nicht dir!");
-                return;
-            }
-
-            MySqlCommand cmd = new MySqlCommand("UPDATE vehicles SET " +
-            "p_x = @p_x, p_y = @p_y, p_z = @p_z, r = @r, " +
-            "engine = @engine, locked = @locked, hp = @hp, km=@km, fuel=@fuel, last_used = @last_used " +
-            "WHERE id = @id");
-            cmd.Parameters.AddWithValue("@p_x", v.Position.X);
-            cmd.Parameters.AddWithValue("@p_y", v.Position.Y);
-            cmd.Parameters.AddWithValue("@p_z", v.Position.Z);
-            cmd.Parameters.AddWithValue("@r", v.Rotation.Z);
-
-            cmd.Parameters.AddWithValue("@engine", v.GetData("engine"));
-            cmd.Parameters.AddWithValue("@locked", v.Locked);
-            cmd.Parameters.AddWithValue("@hp", v.GetData("hp"));
-            cmd.Parameters.AddWithValue("@km", v.GetData("km"));
-            cmd.Parameters.AddWithValue("@fuel", v.GetData("fuel"));
-            cmd.Parameters.AddWithValue("@last_used", v.GetData("lastUsed"));
-
-            cmd.Parameters.AddWithValue("@id", v.GetData("id"));
-
-            DatabaseAPI.API.executeNonQuery(cmd);
-            c.SendNotification("Dein Fahrzeug wurde ~g~erfolgreich~w~ geparkt!");
-        }
-
         [Command("unrent")]
         public void UnRent(Client c)
         {
@@ -131,11 +86,40 @@ namespace Roleplay.Player
                     }
                 }
                 c.SendNotification("[~y~Taxizentrale~w~]: bitte mach dich nun auf den Weg zum Fahrgast!");
-            } else if (c.HasData("schrotti"))
+                return;
+            } 
+            
+            if (c.HasData("schrotti"))
             {
                 c.SendNotification("~g~Schrotti's Deal akzeptiert!");
                 c.SetData("schrottiaccept", 1);
                 c.ResetData("schrotti");
+                return;
+            }
+
+            if (c.HasData("finvite"))
+            {
+                Client leader = c.GetData("finvite");
+
+                MySqlConnection conn = DatabaseAPI.API.GetInstance().GetConnection();
+
+                MySqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = "UPDATE characters SET fraktion = @frak, fraktionrank = @frank WHERE id = @pid";
+                cmd.Parameters.AddWithValue("@pid", c.GetData("character_id"));
+                cmd.Parameters.AddWithValue("@frak", leader.GetData("fraktion"));
+                cmd.Parameters.AddWithValue("@frank", 1);
+                cmd.ExecuteNonQuery();
+
+                DatabaseAPI.API.GetInstance().FreeConnection(conn);
+
+                c.SetData("fraktion", leader.GetData("fraktion"));
+                c.SetData("fraktionrank", 1);
+
+                leader.SendNotification($"~g~Spieler ~w~{c.Name}~g~ hat die Einladung akzeptiert!");
+                c.SendNotification($"~g~Du bist nun Mitglied bei der " + Fraktionssystem.API.Frakranknames[(leader.GetData("fraktion") > Fraktionssystem.API.Frakranknames.Length) ? 0 : leader.GetData("fraktion")] + "!");
+
+                c.ResetData("finvite");
                 return;
             }
 

@@ -54,28 +54,14 @@ namespace Roleplay.Player
         [RemoteEvent("OpenPlayerInteraction")]
         public void OpenPlayerInteraction(Client c)
         {
-            int isinvehiclenear = 0;
+            int duty = 0;
 
-            Vehicle[] veh = NAPI.Pools.GetAllVehicles().ToArray();
-
-            for (int i = 0; i < veh.Length; i++)
+            if (c.HasData("onduty") && c.GetData("onduty") == 1)
             {
-                if (c.Position.DistanceTo2D(veh[i].Position) <= 3)
-                {
-                    isinvehiclenear = 1;
-                }
+                duty = 1;
             }
 
-
-            if (c.HasData("onduty"))
-            {
-                int duty = c.GetData("onduty");
-                c.TriggerEvent("PlayerInteraction", duty, isinvehiclenear);
-            } else
-            {
-                int duty = 0;
-                c.TriggerEvent("PlayerInteraction", duty, isinvehiclenear);
-            }
+             c.TriggerEvent("PlayerInteraction", duty);
         }
 
         [RemoteEvent("LockOrUnlockVeh")]

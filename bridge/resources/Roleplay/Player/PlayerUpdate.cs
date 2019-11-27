@@ -38,6 +38,30 @@ namespace Roleplay.Player
             c.TriggerEvent("starhud", c.GetData("wanteds"));
         }
 
+        public static void UpdatePlayerJailtime(Client c, int jailtime)
+        {
+            MySqlConnection conn = DatabaseAPI.API.GetInstance().GetConnection();
+            MySqlCommand cmd = new MySqlCommand("UPDATE characters SET jailtime = @jailtime WHERE id=@cid", conn);
+            cmd.Parameters.AddWithValue("@cid", c.GetData("character_id"));
+            cmd.Parameters.AddWithValue("@jailtime", jailtime);
+
+            cmd.ExecuteNonQuery();
+
+            DatabaseAPI.API.GetInstance().FreeConnection(conn);
+
+            c.SetData("jailtime", jailtime);
+
+            if (c.GetData("jailtime") == 0)
+            {
+                c.SendNotification("Benimm dich in Zukunft!");
+                c.Position = new Vector3(1690.82, 2591.23, 45.91441);
+                c.Rotation = new Vector3(0.9488825, 0, 0);
+            } else
+            {
+                c.SendNotification($"Jailtime: {c.GetData("jailtime")} Minuten");
+            }
+        }
+
         public static void UpdateLicensePoints(Client c, int points)
         {
             MySqlConnection conn = DatabaseAPI.API.GetInstance().GetConnection();
@@ -72,12 +96,19 @@ namespace Roleplay.Player
             #region Wanteds
             MySqlConnection conn = DatabaseAPI.API.GetInstance().GetConnection();
 
-            MySqlCommand cmd = new MySqlCommand("SELECT wanteds FROM characters WHERE id = @character_id", conn);
+            MySqlCommand cmd = new MySqlCommand("SELECT wanteds, jailtime FROM characters WHERE id = @character_id", conn);
             cmd.Parameters.AddWithValue("@character_id", c.GetData("character_id"));
             MySqlDataReader r = cmd.ExecuteReader();
             if (r.Read())
             {
                 c.SetData("wanteds", r.GetInt32("wanteds"));
+                c.SetData("jailtime", r.GetInt32("jailtime"));
+
+                if (r.GetInt32("jailtime") != 0)
+                {
+                    c.Position = new Vector3(1729.212, 2563.543, 45.56488);
+                    c.Rotation = new Vector3(186.1379, 0, 0);
+                }
             }
             r.Close();
 

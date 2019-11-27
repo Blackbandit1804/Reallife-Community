@@ -14,6 +14,9 @@ namespace Roleplay.Fraktionssystem
 
             NAPI.TextLabel.CreateTextLabel("Benutze '~g~E~w~' um in den Dienst zu gehen.", new Vector3(461.416, -981.1726, 30.6896), 8, 1f, 4, new Color(255, 255, 255, 255));
 
+            //Prison
+            NAPI.TextLabel.CreateTextLabel("Benutze '~g~/arrest~w~' um jemanden einzusperren.", new Vector3(1690.748, 2608.409, 45.82283), 8, 1f, 4, new Color(255, 255, 255, 255));
+
             //LSMS
             NAPI.TextLabel.CreateTextLabel("Benutze '~g~E~w~' um in den Dienst zu gehen.", new Vector3(1124.566, -1523.731, 34.84324), 8, 1f, 4, new Color(255, 255, 255, 255));
         }

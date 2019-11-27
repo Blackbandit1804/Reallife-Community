@@ -34,12 +34,6 @@ mp.events.add('epm', (multi) => {
 	mp.gui.chat.push("EPM: " + vMulti);
 });
 
-mp.keys.bind(0x58, true, function() {
-    if (player.vehicle) {
-		mp.events.callRemote("toggleEngine");
-	}
-});
-
 /*mp.keys.bind(0x47, true, function() {
 	if(!player.vehicle)
 		return;

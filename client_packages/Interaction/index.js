@@ -96,7 +96,7 @@ mp.events.add("StartExitHouseMenu", (c, locked) => {
     });
 });
 
-mp.events.add("PlayerInteraction", (duty, isinvehiclenear) => {
+mp.events.add("PlayerInteraction", (duty) => {
 	if (mp.gui.cursor.visible)
 		return;
 	
@@ -111,9 +111,6 @@ mp.events.add("PlayerInteraction", (duty, isinvehiclenear) => {
       
 	imenu.AddItem(new NativeUI.UIMenuItem("~r~Verlassen", "~r~Menü Schließen!"));
 	imenu.AddItem(new NativeUI.UIMenuItem("Ausweis Zeigen", "Zeigt einem Spieler in deiner Nähe deinen Ausweis!"));
-    if (isinvehiclenear == 1) {
-	imenu.AddItem(new NativeUI.UIMenuItem("Fahrzeug ab-/aufschließen"));
-	}
 	if (duty == 1) {
         imenu.AddItem(new NativeUI.UIMenuItem("Dienstausweis zeigen"));
     }
@@ -124,7 +121,46 @@ mp.events.add("PlayerInteraction", (duty, isinvehiclenear) => {
                 mp.events.callRemote("ShowPlayerAusweis");
                 break;
 			case 2:
-				mp.events.callRemote("LockOrUnlockVeh");
+                mp.events.callRemote("ShowPlayerDienstAusweis");
+                break;
+        };
+		isopen = 0;
+        imenu.Close();
+        delete imenu;
+        mp.gui.chat.show(true);
+    });
+});
+
+mp.events.add("VehicleInteraction", (isinvehicle) => {
+	if (mp.gui.cursor.visible)
+		return;
+	
+    if (isopen == 1)
+        return;
+	
+	isopen = 1;
+    let NativeUI = require("nativeui");
+    imenu = new NativeUI.Menu("Interaktion`s Menü", "", new NativeUI.Point(50, 50));
+
+    mp.gui.chat.show(false);
+      
+	imenu.AddItem(new NativeUI.UIMenuItem("~r~Verlassen", "~r~Menü Schließen!"));
+	imenu.AddItem(new NativeUI.UIMenuItem("Fahrzeug abschließen"));
+    if (isinvehicle == 1) {
+	imenu.AddItem(new NativeUI.UIMenuItem("Motor An/Aus"));
+	imenu.AddItem(new NativeUI.UIMenuItem("Fahrzeug parken"));
+	}
+
+    imenu.ItemSelect.on((item, index)  => {
+        switch(index) {
+            case 1:
+                mp.events.callRemote("LockOrUnlockVeh");
+                break;
+			case 2:
+				mp.events.callRemote("toggleEngine");
+				break;
+			case 3:
+				mp.events.callRemote("ParkVehicle");
 				break;
         };
 		isopen = 0;
@@ -136,6 +172,10 @@ mp.events.add("PlayerInteraction", (duty, isinvehiclenear) => {
 
 mp.keys.bind(0x4D, false, function() {
 	mp.events.callRemote("OpenPlayerInteraction", player);
+});
+
+mp.keys.bind(0x58, true, function() {
+	mp.events.callRemote("OpenVehicleInteraction", player);
 });
 
 mp.keys.bind(0x45, false, function() {
@@ -152,4 +192,5 @@ mp.keys.bind(0x45, false, function() {
 	mp.events.callRemote("Egd", player);
 	mp.events.callRemote("Ekey", player);
 	mp.events.callRemote("OPC", player);
+	mp.events.callRemote("VehicleInteraction", player);
 });

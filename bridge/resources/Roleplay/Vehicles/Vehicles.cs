@@ -379,6 +379,72 @@ namespace Roleplay.Vehicles
             veh.SetData("lastUsed", DateTime.Now);
         }
 
+        [RemoteEvent("ParkVehicle")]
+        public void ParkOwnVehicle(Client c)
+        {
+            Vehicle v = c.Vehicle;
+
+            if (!c.IsInVehicle)
+            {
+                c.SendNotification("Du bist in keinem Fahrzeug!");
+                return;
+            }
+
+            if (!v.HasData("id"))
+            {
+                c.SendNotification("Dieses Fahrzeug kannst du nicht parken!");
+                return;
+            }
+
+            if (v.GetData("owner") != c.GetData("character_id"))
+            {
+                c.SendNotification("Dieses Fahrzeug gehört nicht dir!");
+                return;
+            }
+
+            MySqlCommand cmd = new MySqlCommand("UPDATE vehicles SET " +
+            "p_x = @p_x, p_y = @p_y, p_z = @p_z, r = @r, " +
+            "engine = @engine, locked = @locked, hp = @hp, km=@km, fuel=@fuel, last_used = @last_used " +
+            "WHERE id = @id");
+            cmd.Parameters.AddWithValue("@p_x", v.Position.X);
+            cmd.Parameters.AddWithValue("@p_y", v.Position.Y);
+            cmd.Parameters.AddWithValue("@p_z", v.Position.Z);
+            cmd.Parameters.AddWithValue("@r", v.Rotation.Z);
+
+            cmd.Parameters.AddWithValue("@engine", v.GetData("engine"));
+            cmd.Parameters.AddWithValue("@locked", v.Locked);
+            cmd.Parameters.AddWithValue("@hp", v.GetData("hp"));
+            cmd.Parameters.AddWithValue("@km", v.GetData("km"));
+            cmd.Parameters.AddWithValue("@fuel", v.GetData("fuel"));
+            cmd.Parameters.AddWithValue("@last_used", v.GetData("lastUsed"));
+
+            cmd.Parameters.AddWithValue("@id", v.GetData("id"));
+
+            DatabaseAPI.API.executeNonQuery(cmd);
+            c.SendNotification("Dein Fahrzeug wurde ~g~erfolgreich~w~ geparkt!");
+        }
+
+        [RemoteEvent("OpenVehicleInteraction")]
+        public void OpenPlayerInteraction(Client c)
+        {
+
+            Vehicle[] veh = NAPI.Pools.GetAllVehicles().ToArray();
+
+            for (int i = 0; i < veh.Length; i++)
+            {
+                if (c.Position.DistanceTo2D(veh[i].Position) <= 3)
+                {
+                    int isinvehicle = 0;
+
+                    if (c.IsInVehicle && c.VehicleSeat == -1)
+                    {
+                        isinvehicle = 1;
+                    }
+
+                    c.TriggerEvent("VehicleInteraction", isinvehicle);
+                }
+            }
+        }
 
         [RemoteEvent("toggleEngine")]
         public static void ToggleEngine(Client c)

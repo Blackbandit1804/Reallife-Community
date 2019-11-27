@@ -10,11 +10,11 @@ namespace Roleplay.DatabaseAPI
     public class API
     {
         #region Settings
-        public static readonly string HOST = "playhabbo.net";
+        public static readonly string HOST = "localhost";
         public static readonly int PORT = 3306;
-        public static readonly string DATABASE = "cnvpvwqh_ragemp";
-        public static readonly string USERNAME = "cnvpv_habbo";
-        public static readonly string PASSWORD = "Atamguec2000";
+        public static readonly string DATABASE = "rage";
+        public static readonly string USERNAME = "root";
+        public static readonly string PASSWORD = "";
         public static readonly string SSL_MODE = "none";
 
         // Die Anzahl an Verbindungen, die gleichzeitig offen sind.

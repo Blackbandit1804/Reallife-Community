@@ -57,6 +57,11 @@ namespace Roleplay.Player
 
         public static void OnPlayerPayday(Client c)
         {
+            if (c.GetData("jailtime") != 0)
+            {
+                PlayerUpdate.UpdatePlayerJailtime(c, c.GetData("jailtime") - 1);
+            }
+
             if (c.GetData("PlayerPaydayTimer") < 59)
             {
                 c.SetData("PlayerPaydayTimer", c.GetData("PlayerPaydayTimer") +1);
@@ -73,7 +78,7 @@ namespace Roleplay.Player
 
                 if (c.GetData("wanteds") != 0)
                 {
-                    Player.PlayerUpdate.UpdatePlayerWanteds(c, false, 1);
+                    PlayerUpdate.UpdatePlayerWanteds(c, false, 1);
                 }
 
                 c.SetData("PlayerPaydayTimer", 0);

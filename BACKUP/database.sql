@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Erstellungszeit: 26. Nov 2019 um 14:30
--- Server-Version: 10.1.29-MariaDB
--- PHP-Version: 7.3.5
+-- Host: 127.0.0.1
+-- Erstellungszeit: 27. Nov 2019 um 21:50
+-- Server-Version: 10.4.8-MariaDB
+-- PHP-Version: 7.3.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Datenbank: `cnvpvwqh_ragemp`
+-- Datenbank: `rage`
 --
 
 -- --------------------------------------------------------
@@ -34,7 +34,7 @@ CREATE TABLE `accounts` (
   `password_hash` char(40) NOT NULL,
   `password_salt` char(32) NOT NULL,
   `password_iterations` int(7) DEFAULT NULL,
-  `creation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creation` timestamp NOT NULL DEFAULT current_timestamp(),
   `rank` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
@@ -47,7 +47,7 @@ CREATE TABLE `accounts` (
 CREATE TABLE `accounts_serial` (
   `account_id` int(11) NOT NULL,
   `serial` char(128) NOT NULL,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `time` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
@@ -59,7 +59,7 @@ CREATE TABLE `accounts_serial` (
 CREATE TABLE `accounts_socialclub` (
   `account_id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `time` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
@@ -70,9 +70,9 @@ CREATE TABLE `accounts_socialclub` (
 
 CREATE TABLE `bank_accounts` (
   `id` int(11) NOT NULL,
-  `character_id` int(11) NOT NULL DEFAULT '0',
-  `pin` int(4) NOT NULL DEFAULT '0',
-  `money` int(11) NOT NULL DEFAULT '0'
+  `character_id` int(11) NOT NULL DEFAULT 0,
+  `pin` int(4) NOT NULL DEFAULT 0,
+  `money` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
@@ -144,12 +144,12 @@ CREATE TABLE `cfg_vehicles` (
   `id` int(11) NOT NULL,
   `name` varchar(20) NOT NULL,
   `hash` int(2) UNSIGNED NOT NULL,
-  `multi` int(2) NOT NULL DEFAULT '1',
-  `price` int(10) NOT NULL DEFAULT '0',
+  `multi` int(2) NOT NULL DEFAULT 1,
+  `price` int(10) NOT NULL DEFAULT 0,
   `type` tinyint(4) DEFAULT NULL,
-  `fuel_tank` float NOT NULL DEFAULT '0',
-  `fuel_consumption` float NOT NULL DEFAULT '0',
-  `aktiv` int(1) NOT NULL DEFAULT '0'
+  `fuel_tank` float NOT NULL DEFAULT 0,
+  `fuel_consumption` float NOT NULL DEFAULT 0,
+  `aktiv` int(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='/epm (Summe)\r\nSELECT *, fuel_tank / fuel_consumption AS range_km From cfg_vehicles' ROW_FORMAT=DYNAMIC;
 
 --
@@ -816,9 +816,10 @@ CREATE TABLE `characters` (
   `last_name` varchar(20) NOT NULL,
   `cash` int(11) NOT NULL,
   `wanteds` int(11) NOT NULL,
+  `jailtime` int(11) NOT NULL,
   `account_id` int(11) NOT NULL,
   `vehicles` int(11) NOT NULL,
-  `creation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creation` timestamp NOT NULL DEFAULT current_timestamp(),
   `p_x` float NOT NULL,
   `p_y` float NOT NULL,
   `p_z` float NOT NULL,
@@ -956,26 +957,26 @@ CREATE TABLE `fvehicles` (
   `id` int(11) NOT NULL,
   `fraktion` varchar(50) NOT NULL,
   `cfg_vehicle_id` int(11) NOT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT '1',
-  `engine` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
-  `locked` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `active` tinyint(1) NOT NULL DEFAULT 1,
+  `engine` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `locked` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   `p_x` float NOT NULL,
   `p_y` float NOT NULL,
   `p_z` float NOT NULL,
   `r` float NOT NULL,
-  `c` int(11) NOT NULL DEFAULT '0',
-  `c_r` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
-  `c_g` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
-  `c_b` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
-  `s` int(11) NOT NULL DEFAULT '0',
-  `s_r` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
-  `s_g` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
-  `s_b` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
-  `hp` float NOT NULL DEFAULT '100',
-  `km` float NOT NULL DEFAULT '0',
-  `fuel` float NOT NULL DEFAULT '0',
-  `last_used` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `insert` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `c` int(11) NOT NULL DEFAULT 0,
+  `c_r` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `c_g` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `c_b` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `s` int(11) NOT NULL DEFAULT 0,
+  `s_r` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `s_g` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `s_b` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `hp` float NOT NULL DEFAULT 100,
+  `km` float NOT NULL DEFAULT 0,
+  `fuel` float NOT NULL DEFAULT 0,
+  `last_used` timestamp NOT NULL DEFAULT current_timestamp(),
+  `insert` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 --
@@ -990,17 +991,17 @@ INSERT INTO `fvehicles` (`id`, `fraktion`, `cfg_vehicle_id`, `active`, `engine`,
 (5, 'LSPD', 362, 1, 1, 0, 431.292, -1027.77, 28.5254, 0.581177, 24, 0, 0, 0, 0, 0, 0, 0, 100, 0.356416, 37.1472, '2019-07-25 07:11:12', '2019-07-25 07:11:12'),
 (6, 'LSPD', 363, 1, 0, 0, 462.875, -1014.96, 27.6887, 90.1865, 24, 0, 0, 0, 0, 0, 0, 0, 100, 0.0012881, 37.4985, '2019-07-25 07:11:12', '2019-07-25 07:11:12'),
 (7, 'LSPD', 363, 1, 1, 0, 462.923, -1019.45, 27.7073, 90.0844, 24, 0, 0, 0, 0, 0, 0, 0, 100, 0.1022, 37.3774, '2019-07-25 07:11:12', '2019-07-25 07:11:12'),
-(8, 'LSPD', 364, 1, 1, 0, 427.514, -1028.13, 28.7435, 359.999, 24, 0, 0, 0, 0, 0, 0, 0, 100, 0.00366578, 39.9934, '2019-07-25 07:11:12', '2019-07-25 07:11:12'),
+(8, 'LSPD', 364, 1, 1, 0, 427.514, -1028.13, 28.7435, 359.999, 24, 0, 0, 0, 0, 0, 0, 0, 100, 0.00444734, 39.992, '2019-07-25 07:11:12', '2019-07-25 07:11:12'),
 (9, 'LSPD', 369, 1, 0, 0, 431.369, -997.235, 25.7462, 179.966, 24, 0, 0, 0, 0, 0, 0, 0, 100, 0, 85, '2019-07-25 07:11:12', '2019-07-25 07:11:12'),
 (10, 'LSPD', 369, 1, 0, 0, 436.304, -997.109, 25.7482, 179.544, 24, 0, 0, 0, 0, 0, 0, 0, 100, 0, 42.5, '2019-07-25 07:11:12', '2019-07-25 07:11:12'),
-(11, 'SARU', 8, 1, 0, 0, 1101.54, -1510.95, 34.4599, 269.095, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0.0936526, 54.897, '2019-07-25 12:31:15', '2019-07-25 12:31:15'),
-(12, 'SARU', 8, 1, 0, 0, 1101.55, -1507.32, 34.4606, 268.266, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0.0404922, 54.9555, '2019-07-25 12:34:39', '2019-07-25 12:34:39'),
-(13, 'SARU', 8, 1, 0, 0, 1101.62, -1503.67, 34.46, 268.998, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0.0298496, 54.9671, '2019-07-25 12:35:38', '2019-07-25 12:35:38'),
-(14, 'SARU', 8, 1, 0, 0, 1101.56, -1500.24, 34.46, 269.482, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0.0214362, 54.9765, '2019-07-25 12:36:15', '2019-07-25 12:36:15'),
-(15, 'SARU', 8, 1, 0, 0, 1101.53, -1496.86, 34.4614, 270.103, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0.0467161, 54.9486, '2019-07-25 12:36:57', '2019-07-25 12:36:57'),
-(16, 'SARU', 365, 1, 0, 0, 1114.96, -1517.07, 34.2998, 359.272, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0.016052, 74.9792, '2019-07-25 12:38:51', '2019-07-25 12:38:51'),
-(17, 'SARU', 365, 1, 0, 0, 1117.79, -1517.09, 34.3152, 359.599, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0.0158203, 37.4794, '2019-07-25 12:41:39', '2019-07-25 12:41:39'),
-(18, 'SARU', 365, 1, 0, 0, 1120.88, -1517.04, 34.2981, 358.675, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0.0234394, 37.4695, '2019-07-25 12:43:31', '2019-07-25 12:43:31');
+(11, 'LSMS', 8, 1, 0, 0, 1101.54, -1510.95, 34.4599, 269.095, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0.0936526, 54.897, '2019-07-25 12:31:15', '2019-07-25 12:31:15'),
+(12, 'LSMS', 8, 1, 0, 0, 1101.55, -1507.32, 34.4606, 268.266, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0.0404922, 54.9555, '2019-07-25 12:34:39', '2019-07-25 12:34:39'),
+(13, 'LSMS', 8, 1, 0, 0, 1101.62, -1503.67, 34.46, 268.998, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0.0298496, 54.9671, '2019-07-25 12:35:38', '2019-07-25 12:35:38'),
+(14, 'LSMS', 8, 1, 0, 0, 1101.56, -1500.24, 34.46, 269.482, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0.0214362, 54.9765, '2019-07-25 12:36:15', '2019-07-25 12:36:15'),
+(15, 'LSMS', 8, 1, 0, 0, 1101.53, -1496.86, 34.4614, 270.103, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0.0467161, 54.9486, '2019-07-25 12:36:57', '2019-07-25 12:36:57'),
+(16, 'LSMS', 365, 1, 0, 0, 1114.96, -1517.07, 34.2998, 359.272, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0.016052, 74.9792, '2019-07-25 12:38:51', '2019-07-25 12:38:51'),
+(17, 'LSMS', 365, 1, 0, 0, 1117.79, -1517.09, 34.3152, 359.599, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0.0158203, 37.4794, '2019-07-25 12:41:39', '2019-07-25 12:41:39'),
+(18, 'LSMS', 365, 1, 0, 0, 1120.88, -1517.04, 34.2981, 358.675, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0.0234394, 37.4695, '2019-07-25 12:43:31', '2019-07-25 12:43:31');
 
 -- --------------------------------------------------------
 
@@ -1070,31 +1071,31 @@ CREATE TABLE `vehicles` (
   `id` int(11) NOT NULL,
   `cfg_vehicle_id` int(11) NOT NULL,
   `character_id` int(11) NOT NULL,
-  `garage_id` int(11) NOT NULL DEFAULT '0',
-  `active` tinyint(1) NOT NULL DEFAULT '1',
-  `alive` tinyint(1) NOT NULL DEFAULT '1',
-  `engine` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
-  `locked` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `garage_id` int(11) NOT NULL DEFAULT 0,
+  `active` tinyint(1) NOT NULL DEFAULT 1,
+  `alive` tinyint(1) NOT NULL DEFAULT 1,
+  `engine` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `locked` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   `p_x` float NOT NULL,
   `p_y` float NOT NULL,
   `p_z` float NOT NULL,
   `r` float NOT NULL,
-  `dim` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `insurance` tinyint(3) NOT NULL DEFAULT '0',
-  `c` int(11) NOT NULL DEFAULT '0',
-  `c_r` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
-  `c_g` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
-  `c_b` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
-  `s` int(11) NOT NULL DEFAULT '0',
-  `s_r` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
-  `s_g` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
-  `s_b` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
-  `hp` float NOT NULL DEFAULT '100',
-  `km` float NOT NULL DEFAULT '0',
-  `fuel` float NOT NULL DEFAULT '0',
-  `last_used` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `insert` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_owner_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `dim` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `insurance` tinyint(3) NOT NULL DEFAULT 0,
+  `c` int(11) NOT NULL DEFAULT 0,
+  `c_r` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `c_g` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `c_b` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `s` int(11) NOT NULL DEFAULT 0,
+  `s_r` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `s_g` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `s_b` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `hp` float NOT NULL DEFAULT 100,
+  `km` float NOT NULL DEFAULT 0,
+  `fuel` float NOT NULL DEFAULT 0,
+  `last_used` timestamp NOT NULL DEFAULT current_timestamp(),
+  `insert` timestamp NOT NULL DEFAULT current_timestamp(),
+  `last_owner_change` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 --
@@ -1283,7 +1284,7 @@ ALTER TABLE `characters`
 -- AUTO_INCREMENT für Tabelle `fvehicles`
 --
 ALTER TABLE `fvehicles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT für Tabelle `house`
