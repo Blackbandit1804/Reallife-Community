@@ -75,12 +75,18 @@ namespace Roleplay.Fraktionssystem
         }
         #endregion
 
-        #region LSPD
+        #region LSPD & FIB
         [Command("fpunkte")]
         public void FuehrerscheinPunkte(Client c, Client p, int punkte, string reason)
         {
-            if (Fraktionssystem.API.WhichFrak(c, 1))
+            if (Fraktionssystem.API.WhichFrak(c, 1) || Fraktionssystem.API.WhichFrak(c, 3))
             {
+                if (!c.HasData("onduty"))
+                {
+                    c.SendNotification("Du bist nicht im Dienst!");
+                    return;
+                }
+
                 if (!p.HasData("führerschein"))
                 {
                     c.SendNotification("Dieser Spieler besitzt keinen Führerschein!");
@@ -99,8 +105,14 @@ namespace Roleplay.Fraktionssystem
         [Command("setwanted")]
         public void GivePlayerWanteds(Client c, Client p, int wanteds, string reason)
         {
-            if (Fraktionssystem.API.WhichFrak(c, 1))
+            if (Fraktionssystem.API.WhichFrak(c, 1) || Fraktionssystem.API.WhichFrak(c, 3))
             {
+                if (!c.HasData("onduty"))
+                {
+                    c.SendNotification("Du bist nicht im Dienst!");
+                    return;
+                }
+
                 c.SendChatMessage($"[~b~LSPD~w~]: Du hast dem Spieler {p.Name} erfolgreich {wanteds} aus dem Grund: {reason}, gegeben.");
                 p.SendChatMessage($"[~b~LSPD~w~]: Du hast von {c.Name} {wanteds} Wanteds erhalten aus dem Grund: {reason}.");
 
@@ -111,41 +123,47 @@ namespace Roleplay.Fraktionssystem
         [Command("arrest")]
         public void PlayerArrest(Client c, Client p)
         {
-            if (!Fraktionssystem.API.WhichFrak(c, 1))
-                return;
-
-            if (!c.IsInVehicle)
+            if (Fraktionssystem.API.WhichFrak(c, 1) || Fraktionssystem.API.WhichFrak(c, 3))
             {
-                c.SendNotification("Du bist in keinem Fahrzeug!");
-                return;
+                if (!c.HasData("onduty"))
+                {
+                    c.SendNotification("Du bist nicht im Dienst!");
+                    return;
+                }
+
+                if (!c.IsInVehicle)
+                {
+                    c.SendNotification("Du bist in keinem Fahrzeug!");
+                    return;
+                }
+
+                if (c.Vehicle != p.Vehicle)
+                {
+                    c.SendNotification("Der Spieler ist nicht in deinem Fahrzeug!");
+                    return;
+                }
+
+                if (p.GetData("wanteds") == 0)
+                {
+                    c.SendNotification("Der Spieler wird aktuell nicht gesucht!");
+                    return;
+                }
+
+                if (c.Position.DistanceTo2D(new Vector3(1690.748, 2608.409, 45.82283)) > 5)
+                {
+                    c.SendNotification("Du bist nicht in der Nähe.");
+                }
+
+                Player.PlayerUpdate.UpdatePlayerJailtime(p, p.GetData("wanteds") * 3);
+                Player.PlayerUpdate.UpdatePlayerWanteds(p, false, p.GetData("wanteds"));
+
+                p.SendNotification("Du wurdest verhaftet!");
+                p.SendNotification($"Du bist nun für {p.GetData("jailtime")} Minuten im Gefängnis!");
+                c.SendNotification($"Du hast den Spieler {p.Name} festgenommen!");
+
+                p.Position = new Vector3(1729.212, 2563.543, 45.56488);
+                p.Rotation = new Vector3(186.1379, 0, 0);
             }
-
-            if (c.Vehicle != p.Vehicle)
-            {
-                c.SendNotification("Der Spieler ist nicht in deinem Fahrzeug!");
-                return;
-            }
-
-            if (p.GetData("wanteds") == 0)
-            {
-                c.SendNotification("Der Spieler wird aktuell nicht gesucht!");
-                return;
-            }
-
-            if (c.Position.DistanceTo2D(new Vector3(1690.748, 2608.409, 45.82283)) > 5)
-            {
-                c.SendNotification("Du bist nicht in der Nähe.");
-            }
-
-            Player.PlayerUpdate.UpdatePlayerJailtime(p, p.GetData("wanteds") * 3);
-            Player.PlayerUpdate.UpdatePlayerWanteds(p, false, p.GetData("wanteds"));
-
-            p.SendNotification("Du wurdest verhaftet!");
-            p.SendNotification($"Du bist nun für {p.GetData("jailtime")} Minuten im Gefängnis!");
-            c.SendNotification($"Du hast den Spieler {p.Name} festgenommen!");
-
-            p.Position = new Vector3(1729.212, 2563.543, 45.56488);
-            p.Rotation = new Vector3(186.1379,0,0);
         }
 
         [RemoteEvent("ShowPlayerDienstAusweis")]
@@ -182,72 +200,88 @@ namespace Roleplay.Fraktionssystem
         [Command("cuff")]
         public void cuff(Client c, Client p)
         {
-            if (!Fraktionssystem.API.WhichFrak(c, 1))
-                return;
-
-            if (c.Position.DistanceTo2D(p.Position) < 5)
+            if (Fraktionssystem.API.WhichFrak(c, 1) || Fraktionssystem.API.WhichFrak(c, 3))
             {
-                if (!p.HasData("cuffed"))
+                if (!c.HasData("onduty"))
                 {
-                    NAPI.Player.PlayPlayerAnimation(p, (int)(AnimationFlags.Loop | AnimationFlags.OnlyAnimateUpperBody | AnimationFlags.AllowPlayerControl), "mp_arresting", "idle");
-                    p.RemoveAllWeapons();
-                    p.SetData("cuffed", 1);
-                    p.TriggerEvent("cuff");
-                    c.SendNotification("Du hast " + p.Name + " festgenommen!");
-                    p.SendNotification("Du wurdest von " + c.Name + " in Handschellen gelegt!");
+                    c.SendNotification("Du bist nicht im Dienst!");
+                    return;
+                }
+
+                if (c.Position.DistanceTo2D(p.Position) < 5)
+                {
+                    if (!p.HasData("cuffed"))
+                    {
+                        NAPI.Player.PlayPlayerAnimation(p, (int)(AnimationFlags.Loop | AnimationFlags.OnlyAnimateUpperBody | AnimationFlags.AllowPlayerControl), "mp_arresting", "idle");
+                        p.RemoveAllWeapons();
+                        p.SetData("cuffed", 1);
+                        p.TriggerEvent("cuff");
+                        c.SendNotification("Du hast " + p.Name + " festgenommen!");
+                        p.SendNotification("Du wurdest von " + c.Name + " in Handschellen gelegt!");
+                    }
+                    else
+                    {
+                        p.StopAnimation();
+                        p.ResetData("cuffed");
+                        p.TriggerEvent("uncuff");
+                        c.SendNotification("Du hast " + p.Name + " entfesselt!");
+                        p.SendNotification("Du wurdest aus den Handschellen befreit!");
+                    }
                 }
                 else
                 {
-                    p.StopAnimation();
-                    p.ResetData("cuffed");
-                    p.TriggerEvent("uncuff");
-                    c.SendNotification("Du hast " + p.Name + " entfesselt!");
-                    p.SendNotification("Du wurdest aus den Handschellen befreit!");
+                    c.SendNotification("Spieler ist nicht in Reichweite!");
                 }
             }
-            else
-            {
-                c.SendNotification("Spieler ist nicht in Reichweite!");
-            }
-
         }
         #endregion
 
         #region LSMS
         [Command("revive")]
-        public void RevivePlayer(Client c, Client p)
+        public void RevivePlayer(Client c)
         {
             if (!Fraktionssystem.API.WhichFrak(c, 2))
                 return;
 
-            if (!p.HasData("death"))
+            if (!c.HasData("onduty"))
             {
-                c.SendNotification("Der Spieler muss nicht reanimiert werden!");
+                c.SendNotification("Du bist nicht im Dienst!");
                 return;
             }
 
-            if (c.Position.DistanceTo2D(p.Position) > 5)
+            foreach (Client target in NAPI.Pools.GetAllPlayers())
             {
-                c.SendNotification("Der Spieler befindet sich nicht in der Nähe!");
-                return;
+                if (c.Equals(target)) continue;
+                if (Init.Init.IsInRangeOfPoint(c.Position, new Vector3(target.Position.X, target.Position.Y, target.Position.Z), 2.5f))
+                {
+
+                    if (!target.HasData("death"))
+                    {
+                        c.SendNotification("Der Spieler muss nicht reanimiert werden!");
+                        return;
+                    }
+
+                    NAPI.Player.SpawnPlayer(target, c.Position);
+                    target.Health = 50;
+
+                    target.TriggerEvent("DeathFalse");
+
+                    target.ResetData("death");
+
+                    if (target.HasData("deathblip"))
+                    {
+                        Blip PlayerDeathBlip = target.GetData("deathblip");
+                        PlayerDeathBlip.Delete();
+                        c.ResetData("deathblip");
+                    }
+
+                    target.SendNotification("[~r~LSMS~w~] Du wurdest wiederbelebt!");
+                    c.SendNotification($"[~r~LSMS~w~] Du hast den Spieler {target.Name} wiederbelebt!");
+
+                    MoneyAPI.API.SubCash(target, 150);
+                    MoneyAPI.API.AddCash(c, 250);
+                }
             }
-
-            NAPI.Player.SpawnPlayer(p, c.Position);
-            p.Health = 50;
-
-            p.TriggerEvent("DeathFalse");
-
-            p.ResetData("death");
-
-            Blip PlayerDeathBlip = p.GetData("deathblip");
-            PlayerDeathBlip.Delete();
-            c.ResetData("deathblip");
-
-            p.SendNotification("[~r~LSMS~w~] Du wurdest wiederbelebt!");
-            c.SendNotification($"[~r~LSMS~w~] Du hast den Spieler {p.Name} wiederbelebt!");
-
-            MoneyAPI.API.SubCash(p, 150);
-            MoneyAPI.API.AddCash(c, 250);
         }
 
         [Command("heal")]
@@ -255,6 +289,12 @@ namespace Roleplay.Fraktionssystem
         {
             if (!Fraktionssystem.API.WhichFrak(c, 2))
                 return;
+
+            if (!c.HasData("onduty"))
+            {
+                c.SendNotification("Du bist nicht im Dienst!");
+                return;
+            }
 
             if (!c.IsInVehicle || !p.IsInVehicle || c.Vehicle != p.Vehicle)
             {
@@ -270,6 +310,59 @@ namespace Roleplay.Fraktionssystem
             } else
             {
                 c.SendNotification("Der Spieler ist zu weit entfernt!");
+            }
+        }
+        #endregion
+
+        #region Staatsfraktionen
+        [Command("fc")]
+        public void FraktionsChat(Client c)
+        {
+            if (c.GetData("fraktion") == 0)
+            {
+                c.SendNotification("Du bist in keiner Fraktion!");
+                return;
+            }
+
+            if (!c.HasData("fc"))
+            {
+                if (c.HasData("sc"))
+                {
+                    c.ResetData("sc");
+                }
+
+                c.SendNotification("FC aktiviert!");
+                c.SetData("fc", true);
+            } else
+            {
+                c.SendNotification("FC deaktiviert!");
+                c.ResetData("fc");
+            }
+        }
+
+        [Command("sc")]
+        public void StaatsChat(Client c)
+        {
+            if (c.GetData("fraktion") == 0)
+            {
+                c.SendNotification("Du bist in keiner Fraktion!");
+                return;
+            }
+
+            if (!c.HasData("sc"))
+            {
+                if (c.HasData("fc"))
+                {
+                    c.ResetData("fc");
+                }
+
+                c.SendNotification("SC aktiviert!");
+                c.SetData("sc", true);
+            }
+            else
+            {
+                c.SendNotification("SC deaktiviert!");
+                c.ResetData("sc");
             }
         }
         #endregion

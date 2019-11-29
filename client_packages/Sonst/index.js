@@ -17,7 +17,7 @@ let localPlayer = mp.players.local;
 
 mp.keys.bind(0x42, true, _ => {
     if (localPlayer.vehicle && localPlayer.vehicle.getPedInSeat(-1) === localPlayer.handle && localPlayer.vehicle.getClass() === 18) {
-        localPlayer.vehicle.getVariable('silentMode') ? mp.game.graphics.notify(`Sirene wurde deaktiviert.`) : mp.game.graphics.notify(`Sirene wurde aktiviert.`);
+        localPlayer.vehicle.getVariable('silentMode') ? mp.game.graphics.notify(`Sirene: Hörbar`) : mp.game.graphics.notify(`Sirene: Lautlos`);
         mp.events.callRemote('syncSirens', localPlayer.vehicle)
     }
 });

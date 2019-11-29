@@ -7,11 +7,26 @@ namespace Roleplay.Staat
     {
 
         [RemoteEvent("Ekey")]
-        public static void OpenZulassungsstelle(Client c)
+        public static void EKeyPressed(Client c)
         {
             if (c.Position.DistanceTo2D(new Vector3(-1016.432, -413.3861, 39.6161)) <= 2)
             {
                 c.TriggerEvent("OeffneZulassungsstelle");
+                return;
+            }
+
+            if (c.Position.DistanceTo2D(new Vector3(138.9402, -762.7764, 45.75203)) <= 2)
+            {
+                c.Position = new Vector3(136.1253, -761.7436, 242.152);
+                c.Rotation = new Vector3(0, 0, 159.1514);
+                return;
+            }
+
+            if (c.Position.DistanceTo2D(new Vector3(136.1253, -761.7436, 242.152)) <= 2)
+            {
+                c.Position = new Vector3(138.9402, -762.7764, 45.75203);
+                c.Rotation = new Vector3(0, 0, 154.4504);
+                return;
             }
         }
 

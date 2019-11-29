@@ -72,13 +72,13 @@ namespace Roleplay.Player
             for (int i = 0; i < veh.Length; i++)
             {
 
-                if (!veh[i].HasData("owner"))
+                if (veh[i].HasData("jid") || veh[i].HasData("temp"))
                 {
                     c.SendNotification("Du kannst dieses Fahrzeug NICHT abschließen!");
                     return;
                 }
 
-                if (veh[i].GetData("owner") != c.GetData("character_id"))
+                if (veh[i].HasData("owner") && veh[i].GetData("owner") != c.GetData("character_id") || veh[i].HasData("fraktion") && veh[i].GetData("fraktion") != Fraktionssystem.API.Frakranknames[(c.GetData("fraktion") > Fraktionssystem.API.Frakranknames.Length) ? 0 : c.GetData("fraktion")])
                 {
                     c.SendNotification("Du besitzt keinen Schlüssel!");
                     return;

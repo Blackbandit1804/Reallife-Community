@@ -19,6 +19,13 @@ namespace Roleplay.Fraktionssystem
                     Fraktionssystem.API.LSPDDuty(c);
                 }
             }
+            else if (c.Position.DistanceTo2D(new Vector3(118.8053, -729.1281, 242.1519)) <= 2) 
+            {
+                if (Fraktionssystem.API.WhichFrak(c, 3))
+                {
+                    Fraktionssystem.API.FIBDuty(c);
+                }
+            } 
             else if (c.Position.DistanceTo2D(new Vector3(1124.566, -1523.731, 34.84324)) <= 2)
             {
                 if (Fraktionssystem.API.WhichFrak(c, 2))

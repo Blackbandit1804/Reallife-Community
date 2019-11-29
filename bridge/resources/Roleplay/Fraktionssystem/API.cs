@@ -11,7 +11,8 @@ namespace Roleplay.Fraktionssystem
         public static readonly string[] Frakranknames = new string[] {
             "Bürger",
             "LSPD",
-            "LSMS"
+            "LSMS",
+            "FIB"
         };
 
         public static bool HasLeaderRank(Client c)
@@ -93,6 +94,12 @@ namespace Roleplay.Fraktionssystem
 
             p.SetData("fraktion", 0);
             p.SetData("fraktionrank", 0);
+
+            if (p.HasData("fc") || p.HasData("sc"))
+            {
+                p.ResetData("fc");
+                p.ResetData("sc");
+            }
 
             MySqlConnection conn = DatabaseAPI.API.GetInstance().GetConnection();
 
@@ -191,7 +198,7 @@ namespace Roleplay.Fraktionssystem
         [RemoteEvent("OpenLSPDGate")]
         public void LSPDGateOpen(Client c)
         {
-            if (c.GetData("fraktion") == 1)
+            if (c.GetData("fraktion") == 1 || c.GetData("fraktion") == 3)
             {
                 if (c.Position.DistanceTo2D(new Vector3(411.67, -1023.172, 28.4064846)) < 7)
                 {
@@ -222,7 +229,7 @@ namespace Roleplay.Fraktionssystem
         [RemoteEvent("OpenLSPDDoor")]
         public void LSPDDoorOpen(Client c)
         {
-            if (c.GetData("fraktion") == 1)
+            if (c.GetData("fraktion") == 1 || c.GetData("fraktion") == 3)
             {
                 if (c.Position.DistanceTo2D(new Vector3(453.0793, -983.1895, 30.83926)) < 5)
                 {
@@ -300,6 +307,48 @@ namespace Roleplay.Fraktionssystem
         }
         #endregion
 
+        public static void FIBDuty(Client c)
+        {
+            if (!c.HasData("character_id"))
+                return;
+
+            if (c.HasData("onduty"))
+            {
+                OffDuty(c);
+                return;
+            }
+
+            if (c.GetData("isMale") == true)
+            {
+                c.SetClothes(9, 1, 1);
+                c.SetClothes(7, 125, 0);
+            }
+            else
+            {
+                c.SetClothes(9, 1, 1);
+                c.SetClothes(7, 95, 0);
+            }
+
+
+            c.RemoveAllWeapons();
+
+            WeaponHash hash1 = NAPI.Util.WeaponNameToModel("pistol");
+            c.GiveWeapon(hash1, 999);
+
+            WeaponHash hash2 = NAPI.Util.WeaponNameToModel("smg");
+            c.GiveWeapon(hash2, 999);
+
+            WeaponHash hash3 = NAPI.Util.WeaponNameToModel("flashlight");
+            c.GiveWeapon(hash3, 1);
+
+            WeaponHash hash4 = NAPI.Util.WeaponNameToModel("nightstick");
+            c.GiveWeapon(hash4, 1);
+
+
+            c.SendNotification("Du bist nun im Dienst!");
+            c.SetData("onduty", 1);
+        }
+
         #region LSMS
         public static void LSMSDuty (Client c)
         {
@@ -345,6 +394,7 @@ namespace Roleplay.Fraktionssystem
             c.SetClothes(11, c.GetData("tops"), 0);
             c.SetClothes(3, c.GetData("torsos"), 0);
             c.SetClothes(8, c.GetData("undershirts"), 0);
+            c.SetClothes(9, 0, 0);
 
             c.RemoveAllWeapons();
             c.SendNotification("Du bist nun nicht mehr im Dienst!");

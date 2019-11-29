@@ -193,33 +193,22 @@ namespace Roleplay.Vehicles
 
             MySqlConnection conn = DatabaseAPI.API.GetInstance().GetConnection();
 
-            MySqlCommand ccmd = new MySqlCommand("SELECT character_id FROM numberplates WHERE character_id = @cid", conn);
+            MySqlCommand ccmd = new MySqlCommand("SELECT * FROM numberplates WHERE character_id = @cid", conn);
             ccmd.Parameters.AddWithValue("@cid", charid);
             MySqlDataReader reader = ccmd.ExecuteReader();
             bool scCheck = reader.Read();
-            reader.Close();
             if (!scCheck)
             {
+                reader.Close();
                 DatabaseAPI.API.GetInstance().FreeConnection(conn);
                 return "";
-            }
-
-            DatabaseAPI.API.GetInstance().FreeConnection(conn);
-
-            MySqlCommand cmd = new MySqlCommand("SELECT numberplate FROM numberplates WHERE character_id = @charaid", conn);
-            cmd.Parameters.AddWithValue("@charaid", charid);
-            MySqlDataReader r = cmd.ExecuteReader();
-            if (r.Read())
+            } else
             {
-                string Plate = "LS|" + r.GetString("numberplate");
-                r.Close();
+                string Plate = "LS|" + reader.GetString("numberplate");
+                reader.Close();
                 DatabaseAPI.API.GetInstance().FreeConnection(conn);
                 return Plate;
             }
-            r.Close();
-            DatabaseAPI.API.GetInstance().FreeConnection(conn);
-
-            return "";
         }
 
         public static Vehicle Spawnfv(MySqlDataReader r)

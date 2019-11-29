@@ -64,7 +64,7 @@ namespace Roleplay.Init
                         cmd.Parameters.AddWithValue("@did", 0);
                     }
                     DatabaseAPI.API.executeNonQuery(cmd);
-                    Log.WriteM("Player Saving last pos " + c.Name + " " + cId);
+                    //Log.WriteM("Player Saving last pos " + c.Name + " " + cId);
                 }
             }
         }

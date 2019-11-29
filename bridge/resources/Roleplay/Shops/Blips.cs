@@ -35,6 +35,7 @@ namespace Roleplay.Shops
             CreateMarker(61, new Vector3(1152.221, -1527.989, 34.8434), 0.8f, 1, "LSMS");
 
             CreateMarker(60, new Vector3(429.6514, -981.28, 30.71037), 0.8f, 63, "LSPD");
+            CreateMarker(526, new Vector3(104.7777, -744.4713, 45.75475), 0.8f, 63, "FIB");
             CreateMarker(188, new Vector3(1690.748, 2608.409, 45.82283), 0.8f, 63, "Knast");
 
             CreateMarker(68, new Vector3(403.7291, -1635.22, 29.04765), 0.8f, 21, "Abschlepphof");

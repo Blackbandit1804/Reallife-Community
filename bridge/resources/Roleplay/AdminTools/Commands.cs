@@ -155,7 +155,13 @@ namespace Roleplay.AdminTools
                 p.SetData("fraktion", 0);
 
                 c.SendNotification($"~g~Spieler ~w~{p.Name}~g~ wurde als Leader entlassen!");
-                c.SendNotification($"~g~Du wurdest als Leader entlassen und bist absofort wieder ein Bürger!");
+                p.SendNotification($"~g~Du wurdest als Leader entlassen und bist absofort wieder ein Bürger!");
+
+                if (p.HasData("fc") || p.HasData("sc"))
+                {
+                    p.ResetData("fc");
+                    p.ResetData("sc");
+                }
                 return;
             }
 

@@ -167,7 +167,7 @@ namespace Roleplay.BankAPI
             }
             else
             {
-                c.SendNotification("[FL~g~EE~w~CA]: " + c.Name + " besitzt kein Konto!");
+                c.SendNotification("[FL~g~EE~w~CA]: " + p.Name + " besitzt kein Konto!");
             }
             read.Close();
 
