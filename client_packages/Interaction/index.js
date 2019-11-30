@@ -131,7 +131,7 @@ mp.events.add("PlayerInteraction", (duty) => {
     });
 });
 
-mp.events.add("VehicleInteraction", (isinvehicle) => {
+mp.events.add("VehicleInteraction", (isinvehicle, isinrepair) => {
 	if (mp.gui.cursor.visible)
 		return;
 	
@@ -150,6 +150,9 @@ mp.events.add("VehicleInteraction", (isinvehicle) => {
 	imenu.AddItem(new NativeUI.UIMenuItem("Motor An/Aus"));
 	imenu.AddItem(new NativeUI.UIMenuItem("Fahrzeug parken"));
 	}
+	if (isinrepair == 1) {
+		imenu.AddItem(new NativeUI.UIMenuItem("Fahrzeug reparieren", "Repariere dein Fahrzeug für ~g~100$"));
+	}
 
     imenu.ItemSelect.on((item, index)  => {
         switch(index) {
@@ -161,6 +164,9 @@ mp.events.add("VehicleInteraction", (isinvehicle) => {
 				break;
 			case 3:
 				mp.events.callRemote("ParkVehicle");
+				break;
+			case 4:
+				mp.events.callRemote("RepairVehicle");
 				break;
         };
 		isopen = 0;

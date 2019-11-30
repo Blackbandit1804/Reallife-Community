@@ -30,4 +30,5 @@ require("Player/handy/index.js");
 require("Shops/index.js");
 require("Kleidung/index.js");
 require("Staat/index.js");
+require("Staat/Ticket/index.js");
 require("Fraktionen/LSPD/index.js");

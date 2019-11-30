@@ -417,6 +417,13 @@ namespace Roleplay.Vehicles
         public void OpenPlayerInteraction(Client c)
         {
 
+            Vector3[] RepairPos = new Vector3[]
+            {
+                new Vector3(-965.0243, -3024.913, 13.56587),
+                new Vector3(111.7056, 6625.828, 31.40783),
+                new Vector3(732.7979, -1088.876, 21.68531)
+            };
+
             Vehicle[] veh = NAPI.Pools.GetAllVehicles().ToArray();
 
             for (int i = 0; i < veh.Length; i++)
@@ -424,15 +431,43 @@ namespace Roleplay.Vehicles
                 if (c.Position.DistanceTo2D(veh[i].Position) <= 3)
                 {
                     int isinvehicle = 0;
+                    int isinrepair = 0;
 
                     if (c.IsInVehicle && c.VehicleSeat == -1)
                     {
                         isinvehicle = 1;
+
+                        for (int rp = 0, max = RepairPos.Length; rp < max; rp++)
+                        {
+                            if (c.Position.DistanceTo2D(RepairPos[rp]) < 5)
+                            {
+                                isinrepair = 1;
+                            }
+                        }
                     }
 
-                    c.TriggerEvent("VehicleInteraction", isinvehicle);
+                    c.TriggerEvent("VehicleInteraction", isinvehicle, isinrepair);
                 }
             }
+        }
+
+        [RemoteEvent("RepairVehicle")]
+        public void RepairVehicle(Client c)
+        {
+            if (c.GetData("money_cash") >= 100)
+            {
+                MoneyAPI.API.SubCash(c, 100);
+            } else if (c.GetData("money_bank") >= 100)
+            {
+                BankAPI.API.SubCash(c, 100);
+            } else
+            {
+                c.SendNotification("Du besitzt nicht genügend Geld!");
+                return;
+            }
+
+            c.Vehicle.Repair();
+            c.SendNotification("Fahrzeug repariert!");
         }
 
         [RemoteEvent("toggleEngine")]

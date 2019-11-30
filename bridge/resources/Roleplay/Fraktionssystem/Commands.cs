@@ -76,6 +76,30 @@ namespace Roleplay.Fraktionssystem
         #endregion
 
         #region LSPD & FIB
+        [Command("ticket")]
+        public void OeffneNewTicket(Client c, Client p)
+        {
+            if (Fraktionssystem.API.WhichFrak(c, 1) || Fraktionssystem.API.WhichFrak(c, 3))
+            {
+                if (!c.HasData("onduty"))
+                {
+                    c.SendNotification("du bist nicht im Dienst!");
+                    return;
+                }
+
+                if (c.Position.DistanceTo2D(p.Position) <= 5)
+                {
+                    NAPI.Task.Run(() => {
+                        c.TriggerEvent("OeffneNewTicket");
+                        c.SetData("NewTicket", p);
+                    },delayTime: 300);
+                } else
+                {
+                    c.SendNotification("Spieler nicht in der Nähe!");
+                }
+            }
+        }
+
         [Command("fpunkte")]
         public void FuehrerscheinPunkte(Client c, Client p, int punkte, string reason)
         {

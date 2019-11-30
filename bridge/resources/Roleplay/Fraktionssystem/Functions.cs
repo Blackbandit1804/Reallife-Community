@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using GTANetworkAPI;
 using MySql.Data.MySqlClient;
@@ -8,6 +9,58 @@ namespace Roleplay.Fraktionssystem
 {
     class Functions : Script
     {
+        public static bool CheckNumberOnly(string input)
+        {
+            string specialChar = @"^\|!#$%&/()=?»«@£§€{}.-;:[]'<>_,AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz ";
+            foreach (var item in specialChar)
+            {
+                if (input.Contains(item))
+                    return true;
+            }
+
+            return false;
+        }
+
+        [RemoteEvent("CNT")]
+        public void CreateNewTicket(Client c, string preis, string text)
+        {
+            if (!CheckNumberOnly(preis))
+            {
+                Client p = c.GetData("NewTicket");
+
+                c.ResetData("NewTicket");
+
+                int newpreis = Convert.ToInt32(preis);
+
+                p.TriggerEvent("OeffneReadTicket", newpreis, text);
+                p.SetData("ReadTicket", c);
+                p.SetData("ReadTicketPrice", newpreis);
+            } else
+            {
+                c.SendNotification("Es dürfen nur Zahlen als Betrag angegeben werden!");
+            }
+        }
+
+        [RemoteEvent("RNT")]
+        public void ReadNewTicket(Client c)
+        {
+            Client p = c.GetData("ReadTicket");
+
+            if (c.GetData("money_cash") < c.GetData("ReadTicketPrice"))
+            {
+                p.SendNotification("Diesen Betrag kann der Spieler nicht zahlen!");
+                c.SendNotification("Dieses Geld besitzt du nicht!");
+                return;
+            }
+
+            p.SendNotification("Ticket wurde bezahlt!");
+            c.SendNotification("Ticket wurde bezahlt!");
+            MoneyAPI.API.AddCash(p, c.GetData("ReadTicketPrice"));
+            MoneyAPI.API.SubCash(c, c.GetData("ReadTicketPrice"));
+
+            c.ResetData("ReadTicket");
+            c.ResetData("ReadTicketPrice");
+        }
 
         [RemoteEvent("Egd")]
         public void fDuty(Client c)

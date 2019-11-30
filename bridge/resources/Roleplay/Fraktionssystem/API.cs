@@ -169,10 +169,7 @@ namespace Roleplay.Fraktionssystem
 
             int prank = c.GetData("fraktion");
             if (prank != rank)
-            {
-                c.SendNotification("Du bist nicht dazu befugt!");
                 return false;
-            }
 
             return true;
         }

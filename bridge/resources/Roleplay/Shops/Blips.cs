@@ -36,7 +36,13 @@ namespace Roleplay.Shops
 
             CreateMarker(60, new Vector3(429.6514, -981.28, 30.71037), 0.8f, 63, "LSPD");
             CreateMarker(526, new Vector3(104.7777, -744.4713, 45.75475), 0.8f, 63, "FIB");
-            CreateMarker(188, new Vector3(1690.748, 2608.409, 45.82283), 0.8f, 63, "Knast");
+            CreateMarker(188, new Vector3(1690.748, 2608.409, 45.82283), 0.8f, 4, "Knast");
+
+            CreateMarker(313, new Vector3(16.88035, -1116.377, 29.79117), 0.8f, 4, "Waffenladen");
+
+            CreateMarker(446, new Vector3(732.7979, -1088.876, 21.68531), 0.8f, 4, "Werkstatt");
+            CreateMarker(446, new Vector3(111.7056, 6625.828, 31.40783), 0.8f, 4, "Werkstatt");
+            CreateMarker(446, new Vector3(-965.0243, -3024.913, 13.56587), 0.8f, 4, "Werkstatt");
 
             CreateMarker(68, new Vector3(403.7291, -1635.22, 29.04765), 0.8f, 21, "Abschlepphof");
             CreateMarker(380, new Vector3(485.187, -1308.765, 29.25349), 0.8f, 1, "Schrottplatz");
