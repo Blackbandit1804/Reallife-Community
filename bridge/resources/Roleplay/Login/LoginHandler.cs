@@ -59,11 +59,12 @@ namespace Roleplay.Login
             string salt = Password.CreateSalt();
             string hash = Password.CreateHash(pass, salt, Password.PBKDF2_ITERATIONS);
 
-            cmd = new MySqlCommand("INSERT INTO accounts (name, password_hash, password_salt, password_iterations) VALUES (@user, @hash, @salt, @it)", conn);
+            cmd = new MySqlCommand("INSERT INTO accounts (name, password_hash, password_salt, password_iterations, rank) VALUES (@user, @hash, @salt, @it, @rank)", conn);
             cmd.Parameters.AddWithValue("@user", user);
             cmd.Parameters.AddWithValue("@hash", hash);
             cmd.Parameters.AddWithValue("@salt", salt);
             cmd.Parameters.AddWithValue("@it", Password.PBKDF2_ITERATIONS);
+            cmd.Parameters.AddWithValue("@rank", 0);
 
             try
             {
