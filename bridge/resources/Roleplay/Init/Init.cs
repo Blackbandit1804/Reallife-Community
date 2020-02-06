@@ -64,7 +64,7 @@ namespace Roleplay.Init
                         cmd.Parameters.AddWithValue("@did", 0);
                     }
                     DatabaseAPI.API.executeNonQuery(cmd);
-                    //Log.WriteM("Player Saving last pos " + c.Name + " " + cId);
+                    Log.WriteM("Player Saving last pos " + c.Name + " " + cId);
                 }
             }
         }
@@ -157,7 +157,7 @@ namespace Roleplay.Init
                     Task updatedatetime = Task.Run(() =>
                     {
                         NAPI.World.SetTime(DateTime.Now.Hour, DateTime.Now.Minute,DateTime.Now.Second);
-                        Log.WriteS("Zeit wurde angepasst!");
+                        Log.WriteS("Zeit wurde aktualisiert!");
                     });
 
                     updatedatetime.Wait();
@@ -190,7 +190,7 @@ namespace Roleplay.Init
         {
             c.Dimension = uint.MaxValue - (uint)rnd.Next(999999);
             c.Position = new Vector3(344.3341, -998.8612, -99.19622);
-            c.SendNotification("~g~Dimension: ~w~" + c.Dimension);
+            //c.SendNotification("~g~Dimension: ~w~" + c.Dimension);
         }
 
         [ServerEvent(Event.PlayerDisconnected)]

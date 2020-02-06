@@ -404,6 +404,24 @@ namespace Roleplay.AdminTools
             if (!PermissionAPI.API.HasPermission(c, 1))
                 return;
 
+            c.ResetData("character_id");
+            c.ResetData("jailtime");
+            c.ResetData("PlayerPaydayTimer");
+            c.ResetData("createdc");
+            c.ResetData("vehicles");
+            c.ResetData("fraktion");
+            c.ResetData("fraktionrank");
+            c.ResetData("h_key");
+            c.ResetData("dimension");
+            c.ResetData("houseid");
+            c.ResetData("money_bank");
+            c.ResetData("money_cash");
+            c.ResetData("wanteds");
+            c.ResetData("führerschein");
+            c.ResetData("autoscheinpunkte");
+
+            NAPI.Player.SetPlayerDefaultClothes(c);
+
             Login.Character.CharacterCreator(c);
         }
 

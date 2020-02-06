@@ -87,9 +87,10 @@ namespace Roleplay.Login
             if (reader.Read())
             {
                 int id = reader.GetInt32("id");
+                int admin = 0;
                 reader.Close();
                 c.SendNotification("~g~Erfolgreich registriert!");
-                Login(conn, c, id);
+                Login(conn, c, id, admin);
             }
             else
             {
@@ -156,10 +157,10 @@ namespace Roleplay.Login
                 if (Password.Compare(pass, reader.GetString("password_hash"), reader.GetString("password_salt"), reader.GetInt32("password_iterations")))
                 {
                     int id = reader.GetInt32("id");
-                    c.SetData("admin", reader.GetInt32("rank"));
+                    int admin = reader.GetInt32("rank");
                     c.SetData("registriertseitdem", reader.GetString("creation"));
                     reader.Close();
-                    Login(conn, c, id);
+                    Login(conn, c, id, admin);
                 }
                 else
                 {
@@ -186,7 +187,7 @@ namespace Roleplay.Login
             public string lastName;
         }
 
-        public static void Login(MySqlConnection conn, Client c, int id)
+        public static void Login(MySqlConnection conn, Client c, int id, int admin)
         {
             MySqlCommand cmd = conn.CreateCommand();
             cmd.CommandText = "SELECT id, first_name, last_name FROM characters WHERE account_id = @a_id";
@@ -205,6 +206,7 @@ namespace Roleplay.Login
             }
 
             c.SetData("account_id", id);
+            c.SetData("admin", admin);
 
             c.SendNotification("~g~Erfolgreich eingeloggt!");
             c.TriggerEvent("LoginSuccess", chars);
