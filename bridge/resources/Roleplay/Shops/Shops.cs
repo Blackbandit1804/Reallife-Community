@@ -57,23 +57,25 @@ namespace Roleplay.Shops
         [RemoteEvent("KleidungBuy")]
         public void BuyClothes(Client c)
         {
+            int preis = 0;
+
             if (c.HasData("temptops"))
             {
-                MoneyAPI.API.SubCash(c, 100);
+                preis = preis + 100;
                 c.SetData("tops", c.GetData("temptops"));
                 c.ResetData("temptops");
             }
 
             if (c.HasData("templegs"))
             {
-                MoneyAPI.API.SubCash(c, 101);
+                preis = preis + 100;
                 c.SetData("legs", c.GetData("templegs"));
                 c.ResetData("templegs");
             }
 
             if (c.HasData("tempshoes"))
             {
-                MoneyAPI.API.SubCash(c, 102);
+                preis = preis + 100;
                 c.SetData("shoes", c.GetData("tempshoes"));
                 c.ResetData("tempshoes");
             }
@@ -90,6 +92,16 @@ namespace Roleplay.Shops
                 c.ResetData("tempundershirts");
             }
 
+            if (c.GetData("money_cash") < preis)
+            {
+                c.SendNotification("[~g~Verkäufer~w~]: Du hast nicht genügend Geld bei dir!");
+                return;
+            } else
+            {
+                MoneyAPI.API.SubCash(c, preis);
+                c.SendNotification("[~g~Verkäufer~w~]: Danke für Ihren Einkauf!");
+            }
+
             MySqlConnection conn = DatabaseAPI.API.GetInstance().GetConnection();
             MySqlCommand cmd = new MySqlCommand("UPDATE characters_clothes SET tops = @tops, legs = @legs, shoes = @shoes, torsos = @torsos, undershirts = @us WHERE character_id=@cid", conn);
             cmd.Parameters.AddWithValue("@cid", c.GetData("character_id"));
@@ -103,8 +115,6 @@ namespace Roleplay.Shops
             cmd.ExecuteNonQuery();
 
             DatabaseAPI.API.GetInstance().FreeConnection(conn);
-
-            c.SendNotification("~g~Erfolgreich eingekauft!");
         }
 
         [RemoteEvent("KleidungSchliessen")]

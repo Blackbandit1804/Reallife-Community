@@ -279,7 +279,7 @@ namespace Roleplay.Housesystem
 
             if (reader.Read())
             {
-                c.SetData("lasthouse", reader.GetInt32("id")); //Für die Garage geplant der jeweiligen Häuser
+                //c.SetData("lasthouse", reader.GetInt32("id")); Für die Garage geplant der jeweiligen Häuser
 
                     House house = new House();
                     float posX = reader.GetFloat("x");
@@ -367,7 +367,6 @@ namespace Roleplay.Housesystem
 
             cmd.CommandText = "SELECT * FROM house";
 
-
             MySqlDataReader reader = cmd.ExecuteReader();
 
             if (reader.HasRows)
@@ -399,7 +398,6 @@ namespace Roleplay.Housesystem
 
             reader.Close();
 
-
             DatabaseAPI.API.GetInstance().FreeConnection(conn);
 
             MySqlConnection conn2 = DatabaseAPI.API.GetInstance().GetConnection();
@@ -424,7 +422,6 @@ namespace Roleplay.Housesystem
             MySqlCommand cmd = conn.CreateCommand();
 
             cmd.CommandText = "SELECT * FROM house";
-
 
             using (MySqlDataReader reader = cmd.ExecuteReader())
             {

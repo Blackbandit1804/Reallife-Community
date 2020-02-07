@@ -6968,11 +6968,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\RageMP\\Reallife-Community-master\\bridge\\resources\\Roleplay\\Roleplay.csproj",
+      "projectUniqueName": "E:\\RageMP\\Reallife-Community\\bridge\\resources\\Roleplay\\Roleplay.csproj",
       "projectName": "Roleplay",
-      "projectPath": "E:\\RageMP\\Reallife-Community-master\\bridge\\resources\\Roleplay\\Roleplay.csproj",
+      "projectPath": "E:\\RageMP\\Reallife-Community\\bridge\\resources\\Roleplay\\Roleplay.csproj",
       "packagesPath": "C:\\Users\\Nick\\.nuget\\packages\\",
-      "outputPath": "E:\\RageMP\\Reallife-Community-master\\bridge\\resources\\Roleplay\\obj\\",
+      "outputPath": "E:\\RageMP\\Reallife-Community\\bridge\\resources\\Roleplay\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Nick\\AppData\\Roaming\\NuGet\\NuGet.Config",

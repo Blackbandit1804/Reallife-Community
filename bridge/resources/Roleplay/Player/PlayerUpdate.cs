@@ -51,7 +51,7 @@ namespace Roleplay.Player
 
             c.SetData("jailtime", jailtime);
 
-            if (c.GetData("jailtime") == 0)
+            if (jailtime == 0)
             {
                 c.SendNotification("Benimm dich in Zukunft!");
                 c.Position = new Vector3(1690.82, 2591.23, 45.91441);
