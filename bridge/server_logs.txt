@@ -1,0 +1,109 @@
+Initializing Bootstrapper.dll (0.3.7.0)..
+-> SERVER STARTED AT 07.02.2020 09:15:38
+Loaded 498 entries from vehicleData.json
+Loading resources..
+-> Starting Roleplay resource..
+Roleplay: loading scripts.. found 55 script(s)
+Roleplay: reading referenced assemblies.. found 8 reference(s)
+Roleplay: loading referenced assembly MySql.Data.dll from runtime/
+Roleplay: loading referenced assembly System.Data.Common.dll from runtime/
+Roleplay: loading referenced assembly BouncyCastle.Crypto.dll from runtime/
+Roleplay: loading referenced assembly Google.Protobuf.dll from runtime/
+Roleplay: loading referenced assembly Newtonsoft.Json.dll from runtime/
+Roleplay: loading referenced assembly System.Security.Cryptography.Algorithms.dll from runtime/
+Roleplay: loading referenced assembly System.Security.Cryptography.Csp.dll from runtime/
+Roleplay: loading referenced assembly System.Security.Cryptography.Primitives.dll from runtime/
+Roleplay: compiling scripts..
+Roleplay: instantiating Roleplay.Chat..
+Roleplay: instantiating Roleplay.Staat.LAB..
+Roleplay: instantiating Roleplay.Staat.Functions..
+Roleplay: instantiating Roleplay.Fahrschule.Main..
+Roleplay: instantiating Roleplay.BankAPI.BlipsMarker..
+Roleplay: instantiating Roleplay.BankAPI.Event..
+Roleplay: instantiating Roleplay.BankAPI.API..
+Roleplay: instantiating Roleplay.Jobs.Main..
+Roleplay: instantiating Roleplay.Jobs.Hanfsammeln.Main..
+Roleplay: instantiating Roleplay.Jobs.Busfahrer.Route..
+Roleplay: instantiating Roleplay.Jobs.Gärtner.Gärtner..
+Roleplay: instantiating Roleplay.Jobs.Müllabfuhr.Main..
+Roleplay: instantiating Roleplay.Jobs.Taxi.Main..
+Roleplay: instantiating Roleplay.Jobs.Trucker.Route..
+Roleplay: instantiating Roleplay.Player.PlayerEvent..
+Roleplay: instantiating Roleplay.Player.Commands..
+Roleplay: instantiating Roleplay.Player.PlayerTime..
+Roleplay: instantiating Roleplay.Fraktionssystem.API..
+Roleplay: instantiating Roleplay.Fraktionssystem.LabelMarker..
+Roleplay: instantiating Roleplay.Fraktionssystem.Commands..
+Roleplay: instantiating Roleplay.Fraktionssystem.Functions..
+Roleplay: instantiating Roleplay.Map.DelObj..
+Roleplay: instantiating Roleplay.Housesystem.API..
+Roleplay: instantiating Roleplay.Housesystem.Commands..
+Roleplay: instantiating Roleplay.Vehicles.Vehicles..
+Roleplay: instantiating Roleplay.Vehicles.Garage..
+Roleplay: instantiating Roleplay.Login.Character..
+Roleplay: instantiating Roleplay.Login.Commands..
+Roleplay: instantiating Roleplay.Login.LoginHandler..
+Roleplay: instantiating Roleplay.AdminTools.Commands..
+Roleplay: instantiating Roleplay.Shops.CarShops..
+Roleplay: instantiating Roleplay.Shops.BikeShops..
+Roleplay: instantiating Roleplay.Shops.BoatShops..
+Roleplay: instantiating Roleplay.Shops.VanShops..
+Roleplay: instantiating Roleplay.Shops.AirShops..
+Roleplay: instantiating Roleplay.Shops.FuelStations..
+Roleplay: instantiating Roleplay.Shops.Events..
+Roleplay: instantiating Roleplay.Shops.Marker..
+Roleplay: instantiating Roleplay.Shops.Shops..
+Roleplay: instantiating Roleplay.Shops.Main..
+Roleplay: instantiating Roleplay.Shops.Kleidung..
+Roleplay: instantiating Roleplay.InventoryAPI.API..
+Roleplay: instantiating Roleplay.MoneyAPI.API..
+Roleplay: instantiating Roleplay.DatabaseAPI.Initializer..
+Roleplay: instantiating Roleplay.Init.Init..
+Roleplay: loading server events.. found 1 server event(s)
+Roleplay: loading server events.. found 1 server event(s)
+Roleplay: loading server events.. found 3 server event(s)
+Roleplay: loading server events.. found 1 server event(s)
+Roleplay: loading server events.. found 4 server event(s)
+Roleplay: loaded 10 server events(s)
+Roleplay: loading commands.. found 2 command(s)
+Roleplay: loading commands.. found 1 command(s)
+Roleplay: loading commands.. found 8 command(s)
+Roleplay: loading commands.. found 2 command(s)
+Roleplay: loading commands.. found 13 command(s)
+Roleplay: loading commands.. found 2 command(s)
+Roleplay: loading commands.. found 7 command(s)
+Roleplay: loading commands.. found 2 command(s)
+Roleplay: loading commands.. found 37 command(s)
+Roleplay: loading commands.. found 4 command(s)
+Roleplay: loading commands.. found 3 command(s)
+Roleplay: loading commands.. found 1 command(s)
+Roleplay: loaded 82 commands(s)
+Roleplay: loading remote events.. found 2 remote event(s)
+Roleplay: loading remote events.. found 3 remote event(s)
+Roleplay: loading remote events.. found 6 remote event(s)
+Roleplay: loading remote events.. found 1 remote event(s)
+Roleplay: loading remote events.. found 1 remote event(s)
+Roleplay: loading remote events.. found 1 remote event(s)
+Roleplay: loading remote events.. found 1 remote event(s)
+Roleplay: loading remote events.. found 1 remote event(s)
+Roleplay: loading remote events.. found 4 remote event(s)
+Roleplay: loading remote events.. found 5 remote event(s)
+Roleplay: loading remote events.. found 1 remote event(s)
+Roleplay: loading remote events.. found 2 remote event(s)
+Roleplay: loading remote events.. found 1 remote event(s)
+Roleplay: loading remote events.. found 6 remote event(s)
+Roleplay: loading remote events.. found 3 remote event(s)
+Roleplay: loading remote events.. found 2 remote event(s)
+Roleplay: loading remote events.. found 8 remote event(s)
+Roleplay: loading remote events.. found 4 remote event(s)
+Roleplay: loading remote events.. found 6 remote event(s)
+Roleplay: loading remote events.. found 3 remote event(s)
+Roleplay: loading remote events.. found 10 remote event(s)
+Roleplay: loading remote events.. found 5 remote event(s)
+Roleplay: loading remote events.. found 9 remote event(s)
+Roleplay: loading remote events.. found 1 remote event(s)
+Roleplay: loading remote events.. found 1 remote event(s)
+Roleplay: loading remote events.. found 2 remote event(s)
+Roleplay: loaded 89 remote event(s)
+-> Resource Roleplay started!
+Started! Waiting for connections..

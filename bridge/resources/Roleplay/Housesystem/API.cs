@@ -44,6 +44,12 @@ namespace Roleplay.Housesystem
                     if (houseModel.owner == c.Name)
                     {
                         FinishSellHouse(c, houseModel.id);
+
+                        houseModel.owner = "STAAT";
+                        houseModel.status = 2;
+                        houseModel.locked = 0;
+                        houseModel.houseLabel.Text = GetHouseLabelText(houseModel);
+
                         c.SendChatMessage("Haus verkauft!");
                         Log.WriteS($"Spieler {c.Name} hat sein Haus mit folgender ID verkauft: {houseModel.id}");
                     }
@@ -78,6 +84,11 @@ namespace Roleplay.Housesystem
                         }
 
                         FinishBuyHouse(c, houseModel.id);
+
+                        houseModel.owner = c.Name;
+                        houseModel.status = 0;
+                        houseModel.houseLabel.Text = GetHouseLabelText(houseModel);
+
                         MoneyAPI.API.SubCash(c, houseModel.price);
                         c.SendChatMessage("Haus gekauft!");
                         Log.WriteS($"Spieler {c.Name} hat das Haus mit folgender ID gekauft: {houseModel.id}");
@@ -111,18 +122,6 @@ namespace Roleplay.Housesystem
             c.SetData("h_key", 0);
 
             DatabaseAPI.API.GetInstance().FreeConnection(conn);
-
-            foreach (House houseModel in houseList)
-            {
-                while (c.Position.DistanceTo2D(houseModel.position) < 5 || c.Dimension == houseModel.id)
-                {
-                    houseModel.owner = "STAAT";
-                    houseModel.status = 2;
-
-                    houseModel.houseLabel.Text = GetHouseLabelText(houseModel);
-                    break;
-                }
-            }
         }
 
         public static void FinishBuyHouse(Client c, uint houseid)
@@ -144,18 +143,6 @@ namespace Roleplay.Housesystem
             c.SetData("h_key", houseid);
 
             DatabaseAPI.API.GetInstance().FreeConnection(conn);
-
-            foreach (House houseModel in houseList)
-            {
-                while(c.Position.DistanceTo2D(houseModel.position) < 5 || c.Dimension == houseModel.id)
-                {
-                    houseModel.owner = c.Name;
-                    houseModel.status = 0;
-
-                    houseModel.houseLabel.Text = GetHouseLabelText(houseModel);
-                    break;
-                }
-            }
         }
         #endregion
 
@@ -292,7 +279,7 @@ namespace Roleplay.Housesystem
 
             if (reader.Read())
             {
-                c.SetData("lasthouse", reader.GetInt32("id"));
+                //c.SetData("lasthouse", reader.GetInt32("id")); Für die Garage geplant der jeweiligen Häuser
 
                     House house = new House();
                     float posX = reader.GetFloat("x");
@@ -342,7 +329,7 @@ namespace Roleplay.Housesystem
                             House house = GetHouseById(houseId);
 
                             house.status = 0;
-                            house.rentcost = 0;
+                            house.renter = 0;
 
                             house.houseLabel.Text = GetHouseLabelText(house);
                             c.SendChatMessage($"Haus wird nun nicht mehr vermietet!");
@@ -364,9 +351,8 @@ namespace Roleplay.Housesystem
             MySqlConnection conn2 = DatabaseAPI.API.GetInstance().GetConnection();
 
             MySqlCommand cmd2 = conn2.CreateCommand();
-            cmd2.CommandText = "UPDATE house SET status=@status, rentcost=@rentcost, renter=@renter WHERE owner=@owner";
+            cmd2.CommandText = "UPDATE house SET status=@status, renter=@renter WHERE owner=@owner";
             cmd2.Parameters.AddWithValue("@status", 0);
-            cmd2.Parameters.AddWithValue("@rentcost", 0);
             cmd2.Parameters.AddWithValue("@renter", 0);
             cmd2.Parameters.AddWithValue("@owner", c.Name);
             cmd2.ExecuteNonQuery();
@@ -380,7 +366,6 @@ namespace Roleplay.Housesystem
             MySqlCommand cmd = conn.CreateCommand();
 
             cmd.CommandText = "SELECT * FROM house";
-
 
             MySqlDataReader reader = cmd.ExecuteReader();
 
@@ -413,16 +398,14 @@ namespace Roleplay.Housesystem
 
             reader.Close();
 
-
             DatabaseAPI.API.GetInstance().FreeConnection(conn);
 
             MySqlConnection conn2 = DatabaseAPI.API.GetInstance().GetConnection();
 
             MySqlCommand cmd2 = conn2.CreateCommand();
-            cmd2.CommandText = "UPDATE house SET status=@status, rentcost=@rentcost, renter=@renter WHERE owner=@owner";
+            cmd2.CommandText = "UPDATE house SET status=@status, rentcost=@rentcost, WHERE owner=@owner";
             cmd2.Parameters.AddWithValue("@status", 1);
             cmd2.Parameters.AddWithValue("@rentcost", cost);
-            cmd2.Parameters.AddWithValue("@renter", 0);
             cmd2.Parameters.AddWithValue("@owner", c.Name);
             cmd2.ExecuteNonQuery();
 
@@ -439,7 +422,6 @@ namespace Roleplay.Housesystem
             MySqlCommand cmd = conn.CreateCommand();
 
             cmd.CommandText = "SELECT * FROM house";
-
 
             using (MySqlDataReader reader = cmd.ExecuteReader())
             {

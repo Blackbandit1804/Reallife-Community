@@ -70,19 +70,7 @@ const hairList = [
         {ID: 35, Name: "Mod", Collection: "mpbiker_overlays", Overlay: "MP_Biker_Hair_004_M"},
         {ID: 36, Name: "Layered Mod", Collection: "mpbiker_overlays", Overlay: "MP_Biker_Hair_005_M"},
         {ID: 72, Name: "Flattop", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_M_000_M"},
-        {ID: 73, Name: "Military Buzzcut", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_M_001_M"},
-	{ID: 75, Name: "NewHairCut1", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_M_000_M"},
-	{ID: 76, Name: "NewHairCut2", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_M_000_M"},
-	{ID: 77, Name: "NewHairCut3", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_M_000_M"},
-	{ID: 78, Name: "NewHairCut4", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_M_000_M"},
-	{ID: 79, Name: "NewHairCut5", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_M_000_M"},
-	{ID: 80, Name: "NewHairCut6", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_M_000_M"},
-	{ID: 81, Name: "NewHairCut7", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_M_000_M"},
-	{ID: 82, Name: "NewHairCut8", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_M_000_M"},
-	{ID: 83, Name: "NewHairCut9", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_M_000_M"},
-	{ID: 84, Name: "NewHairCut10", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_M_000_M"},
-	{ID: 85, Name: "NewHairCut11", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_M_000_M"},
-	{ID: 86, Name: "NewHairCut12", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_M_000_M"}
+        {ID: 73, Name: "Military Buzzcut", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_M_001_M"}
     ],
     // female
     [
@@ -125,21 +113,7 @@ const hairList = [
         {ID: 37, Name: "Layered Mod", Collection: "mpbiker_overlays", Overlay: "MP_Biker_Hair_006_F"},
         {ID: 38, Name: "Skinbyrd", Collection: "mpbiker_overlays", Overlay: "MP_Biker_Hair_004_F"},
         {ID: 76, Name: "Neat Bun", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_F_000_F"},
-        {ID: 77, Name: "Short Bob", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_F_001_F"},
-	{ID: 79, Name: "NewFemaleHairCut1", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_F_001_F"},
-	{ID: 80, Name: "NewFemaleHairCut2", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_F_001_F"},
-	{ID: 81, Name: "NewFemaleHairCut3", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_F_001_F"},
-	{ID: 82, Name: "NewFemaleHairCut4", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_F_001_F"},
-	{ID: 83, Name: "NewFemaleHairCut5", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_F_001_F"},
-	{ID: 84, Name: "NewFemaleHairCut6", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_F_001_F"},
-	{ID: 85, Name: "NewFemaleHairCut7", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_F_001_F"},
-	{ID: 86, Name: "NewFemaleHairCut8", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_F_001_F"},
-	{ID: 87, Name: "NewFemaleHairCut9", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_F_001_F"},
-	{ID: 88, Name: "NewFemaleHairCut10", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_F_001_F"},
-	{ID: 89, Name: "NewFemaleHairCut11", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_F_001_F"},
-	{ID: 90, Name: "NewFemaleHairCut12", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_F_001_F"},
-	{ID: 91, Name: "NewFemaleHairCut13", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_F_001_F"},
-	{ID: 92, Name: "NewFemaleHairCut14", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_F_001_F"}
+        {ID: 77, Name: "Short Bob", Collection: "mpgunrunning_overlays", Overlay: "MP_Gunrunning_Hair_F_001_F"}
     ]
 ];
 

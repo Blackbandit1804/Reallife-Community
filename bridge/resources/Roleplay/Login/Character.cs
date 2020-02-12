@@ -84,25 +84,9 @@ namespace Roleplay.Login
 
             NAPI.Player.SetPlayerName(c, vorname + nachname);
 
-            c.Dimension = c.GetData("dimension");
-
-            c.ResetData("createdc");
-
-            for (int i = 0; i < 99; i++) c.SendChatMessage("~w~");
-
             c.TriggerEvent("FinishCharacter");
 
-            MoneyAPI.API.SyncCash(c);
-            BankAPI.API.SyncCash(c);
-            InventoryAPI.API.SyncItems(c);
-            Player.PlayerUpdate.SyncPlayer(c);
-
             c.TriggerEvent("namehud", c);
-            Player.PlayerTime.OnStartPayday(c);
-            if (Init.Init.LSPDDoorLock == 1)
-            {
-                c.TriggerEvent("LSPDGateOpen");
-            }
         }
 
         [RemoteEvent("login.character.select")]
@@ -206,30 +190,18 @@ namespace Roleplay.Login
 
             DatabaseAPI.API.GetInstance().FreeConnection(conn);
 
-            //Klamotten
-            c.SetClothes(6, c.GetData("shoes"), 0);
-            c.SetClothes(4, c.GetData("legs"), 0);
-            c.SetClothes(11, c.GetData("tops"), 0);
-            c.SetClothes(3, c.GetData("torsos"), 0);
-            c.SetClothes(8, c.GetData("undershirts"), 0);
-
-            //Haare
-            c.SetClothes(2, c.GetData("hair"), 0);
-
             if (c.GetData("createdc") == false)
             {
                 c.TriggerEvent("StartCharBrowser");
-                return;
             }
 
             c.Dimension = c.GetData("dimension");
-
-            c.ResetData("createdc");
 
             MoneyAPI.API.SyncCash(c);
             BankAPI.API.SyncCash(c);
             InventoryAPI.API.SyncItems(c);
             Player.PlayerUpdate.SyncPlayer(c);
+            ApplyPlayerClothes(c);
 
             c.TriggerEvent("namehud", c);
             Player.PlayerTime.OnStartPayday(c);
@@ -237,8 +209,7 @@ namespace Roleplay.Login
             {
                 c.TriggerEvent("LSPDGateOpen");
             }
-            c.SendNotification("Deine Haare werden wahrscheinlich erst beim nächsten Login sichtbar sein!");
-            c.SendNotification("Du kannst ganz einfach mit '/dc' dich disconnecten und mit F1 wieder connecten.");
+            c.SendNotification("Du kannst ganz im Notfall dich mit '/dc' disconnecten.");
         }
 
         private static void BindHead(MySqlCommand cmd,  string type, HeadOverlay headOverlay)
@@ -435,26 +406,27 @@ namespace Roleplay.Login
             c.TriggerEvent("toggleCreator", false);
         }
 
-        /*
-        public static void ApplyPlayerClothes(Client player)
+        
+        public static void ApplyPlayerClothes(Client c)
         {
-            int playerId = player.GetData(EntityData.PLAYER_SQL_ID);
-            foreach (ClothesModel clothes in Globals.clothesList)
+            if (!c.HasData("character_id"))
             {
-                if (clothes.player == playerId && clothes.dressed)
-                {
-                    if (clothes.type == 0)
-                    {
-                        player.SetClothes(clothes.slot, clothes.drawable, clothes.texture);
-                    }
-                    else
-                    {
-                        player.SetAccessories(clothes.slot, clothes.drawable, clothes.texture);
-                    }
-                }
+                c.Kick();
+                return;
             }
+
+            //Klamotten
+            c.SetClothes(6, c.GetData("shoes"), 0);
+            c.SetClothes(4, c.GetData("legs"), 0);
+            c.SetClothes(11, c.GetData("tops"), 0);
+            c.SetClothes(3, c.GetData("torsos"), 0);
+            c.SetClothes(8, c.GetData("undershirts"), 0);
+
+            //Haare
+            c.SetClothes(2, c.GetData("hair"), 0);
         }
 
+        /*
         public static void ApplyPlayerTattoos(Client player)
         {
             // Get the tattoos from the player

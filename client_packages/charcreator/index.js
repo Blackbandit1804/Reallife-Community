@@ -111,35 +111,35 @@ function applyCreatorOutfit() {
 }
 
 function fillHairMenu() {
-    hairItem = new UIMenuListItem("Hair", "Your character's hair.", new ItemsCollection(Data.hairList[currentGender].map(h => h.Name)));
+    hairItem = new UIMenuListItem("Haare", "Die Haare deines Charakters.", new ItemsCollection(Data.hairList[currentGender].map(h => h.Name)));
     creatorHairMenu.AddItem(hairItem);
 
-    hairColorItem = new UIMenuListItem("Hair Color", "Your character's hair color.", new ItemsCollection(hairColors));
+    hairColorItem = new UIMenuListItem("Haarfarbe", "Die Haarfarbe deines Charakters.", new ItemsCollection(hairColors));
     creatorHairMenu.AddItem(hairColorItem);
 
-    hairHighlightItem = new UIMenuListItem("Hair Highlight Color", "Your character's hair highlight color.", new ItemsCollection(hairColors));
+    hairHighlightItem = new UIMenuListItem("Haar-Highlight-Farbe", "Die Haarfarbe deines Charakters wird hervorgehoben.", new ItemsCollection(hairColors));
     creatorHairMenu.AddItem(hairHighlightItem);
 
-    eyebrowColorItem = new UIMenuListItem("Eyebrow Color", "Your character's eyebrow color.", new ItemsCollection(hairColors));
+    eyebrowColorItem = new UIMenuListItem("Augenbrauenfarbe", "Die Augenbrauenfarbe deines Charakters.", new ItemsCollection(hairColors));
     creatorHairMenu.AddItem(eyebrowColorItem);
 
-    beardColorItem = new UIMenuListItem("Facial Hair Color", "Your character's facial hair color.", new ItemsCollection(hairColors));
+    beardColorItem = new UIMenuListItem("Gesichtshaarfarbe", "Die Gesichtshaarfarbe deines Charakters.", new ItemsCollection(hairColors));
     creatorHairMenu.AddItem(beardColorItem);
 
-    eyeColorItem = new UIMenuListItem("Eye Color", "Your character's eye color.", new ItemsCollection(Data.eyeColors));
+    eyeColorItem = new UIMenuListItem("Augenfarbe", "Die Augenfarbe deines Charakters.", new ItemsCollection(Data.eyeColors));
     creatorHairMenu.AddItem(eyeColorItem);
 
-    blushColorItem = new UIMenuListItem("Blush Color", "Your character's blush color.", new ItemsCollection(blushColors));
+    blushColorItem = new UIMenuListItem("Erröten", "Die Rouge-Farbe deines Charakters.", new ItemsCollection(blushColors));
     creatorHairMenu.AddItem(blushColorItem);
 
-    lipstickColorItem = new UIMenuListItem("Lipstick Color", "Your character's lipstick color.", new ItemsCollection(lipstickColors));
+    lipstickColorItem = new UIMenuListItem("Lippenstiftfarbe", "Die Lippenstiftfarbe deines Charakters.", new ItemsCollection(lipstickColors));
     creatorHairMenu.AddItem(lipstickColorItem);
 
-    chestHairColorItem = new UIMenuListItem("Chest Hair Color", "Your character's chest hair color.", new ItemsCollection(hairColors));
+    chestHairColorItem = new UIMenuListItem("Brust Haarfarbe", "Die Brust Haarfarbe deines Charakters.", new ItemsCollection(hairColors));
     creatorHairMenu.AddItem(chestHairColorItem);
 
-    creatorHairMenu.AddItem(new UIMenuItem("Randomize", "~r~Randomizes your hair & colors."));
-    creatorHairMenu.AddItem(new UIMenuItem("Reset", "~r~Resets your hair & colors."));
+    creatorHairMenu.AddItem(new UIMenuItem("Randomize", "~r~Randomisiert Ihre Haare und Farben."));
+    creatorHairMenu.AddItem(new UIMenuItem("Reset", "~r~Setzt Ihre Haare und Farben zurück."));
 }
 
 function resetParentsMenu(refresh = false) {
@@ -204,10 +204,10 @@ for (let i = 0; i < Data.maxLipstickColor; i++) lipstickColors.push(i.toString()
 let creatorMainMenu = new Menu("Creator", "", new Point(50, 50));
 let genderItem = new UIMenuListItem("Geschlecht", "~r~Auchtung deine Anpassungen werden zurückgesetzt", new ItemsCollection(["Männlich", "Weiblich"]));
 creatorMainMenu.AddItem(genderItem);
-creatorMainMenu.AddItem(new UIMenuItem("Eltern", "Your character's parents."));
-creatorMainMenu.AddItem(new UIMenuItem("Gesicht", "Your character's facial features."));
-creatorMainMenu.AddItem(new UIMenuItem("Aussehen", "Your character's appearance."));
-creatorMainMenu.AddItem(new UIMenuItem("Haare", "Your character's hair and hair colors."));
+creatorMainMenu.AddItem(new UIMenuItem("Eltern", "Die Eltern deines Charakters."));
+creatorMainMenu.AddItem(new UIMenuItem("Gesicht", "Die Gesichtszüge deines Charakters."));
+creatorMainMenu.AddItem(new UIMenuItem("Aussehen", "Das Aussehen deines Charakters."));
+creatorMainMenu.AddItem(new UIMenuItem("Haare", "Die Haare und Haarfarben deines Charakter."));
 
 let angles = [];
 for (let i = -180.0; i <= 180.0; i += 5.0) angles.push(i.toFixed(1));
@@ -322,24 +322,24 @@ creatorMenus.push(creatorMainMenu);
 let similarities = [];
 for (let i = 0; i <= 100; i++) similarities.push(i + "%");
 
-let creatorParentsMenu = new Menu("Parents", "", new Point(50, 50));
-let fatherItem = new UIMenuListItem("Father", "Your character's father.", new ItemsCollection(Data.fatherNames));
-let motherItem = new UIMenuListItem("Mother", "Your character's mother.", new ItemsCollection(Data.motherNames));
-let similarityItem = new UIMenuListItem("Resemblance", "Similarity to parents.\n(lower = feminine, higher = masculine)", new ItemsCollection(similarities));
-let skinSimilarityItem = new UIMenuListItem("Skin Tone", "Skin color similarity to parents.\n(lower = mother's, higher = father's)", new ItemsCollection(similarities));
+let creatorParentsMenu = new Menu("Eltern", "", new Point(50, 50));
+let fatherItem = new UIMenuListItem("Vater", "Der Vater deines Charakters.", new ItemsCollection(Data.fatherNames));
+let motherItem = new UIMenuListItem("Mutter", "Die Mutter deines Charakters", new ItemsCollection(Data.motherNames));
+let similarityItem = new UIMenuListItem("Ähnlichkeit", "Ähnlichkeit mit Eltern.\n(niedriger = weiblich, höher = männlich)", new ItemsCollection(similarities));
+let skinSimilarityItem = new UIMenuListItem("Hautfarbe", "Hautfarbenähnlichkeit zu den Eltern.\n(niedriger = mutter's, höher = vater's)", new ItemsCollection(similarities));
 creatorParentsMenu.AddItem(fatherItem);
 creatorParentsMenu.AddItem(motherItem);
 creatorParentsMenu.AddItem(similarityItem);
 creatorParentsMenu.AddItem(skinSimilarityItem);
-creatorParentsMenu.AddItem(new UIMenuItem("Randomize", "~r~Randomizes your parents."));
-creatorParentsMenu.AddItem(new UIMenuItem("Reset", "~r~Resets your parents."));
+creatorParentsMenu.AddItem(new UIMenuItem("Randomize", "~r~Randomisiert deine Eltern."));
+creatorParentsMenu.AddItem(new UIMenuItem("Reset", "~r~Setzt deine Eltern zurück."));
 
 similarityItem.Index = 50;
 skinSimilarityItem.Index = 50;
 
 creatorParentsMenu.ItemSelect.on((item, index) => {
     switch (item.Text) {
-        case "Randomize":
+        case "Randomize": //Verändern?
             fatherItem.Index = getRandomInt(0, Data.fathers.length - 1);
             motherItem.Index = getRandomInt(0, Data.mothers.length - 1);
             similarityItem.Index = getRandomInt(0, 100);
@@ -376,8 +376,8 @@ for (let i = 0; i < Data.featureNames.length; i++) {
     creatorFeaturesMenu.AddItem(tempFeatureItem);
 }
 
-creatorFeaturesMenu.AddItem(new UIMenuItem("Randomize", "~r~Randomizes your features."));
-creatorFeaturesMenu.AddItem(new UIMenuItem("Reset", "~r~Resets your features."));
+creatorFeaturesMenu.AddItem(new UIMenuItem("Randomize", "~r~Randomisiert Ihre Funktionen."));
+creatorFeaturesMenu.AddItem(new UIMenuItem("Reset", "~r~Setzt Ihre Funktionen zurück."));
 
 creatorFeaturesMenu.ItemSelect.on((item, index) => {
     switch (item.Text) {
@@ -425,8 +425,8 @@ for (let i = 0; i < Data.appearanceNames.length; i++) {
     creatorAppearanceMenu.AddItem(tempAppearanceOpacityItem);
 }
 
-creatorAppearanceMenu.AddItem(new UIMenuItem("Randomize", "~r~Randomizes your appearance."));
-creatorAppearanceMenu.AddItem(new UIMenuItem("Reset", "~r~Resets your appearance."));
+creatorAppearanceMenu.AddItem(new UIMenuItem("Randomize", "~r~Zufälliges Erscheinungsbild."));
+creatorAppearanceMenu.AddItem(new UIMenuItem("Reset", "~r~Setzt dein Aussehen zurück."));
 
 creatorAppearanceMenu.ItemSelect.on((item, index) => {
     switch (item.Text) {

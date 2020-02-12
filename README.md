@@ -2,15 +2,12 @@
 
 UPADTE:
 
-- FIB hinzugefügt (unfertig)
-- /fc hinzugefügt (Chat unter Fraktionsmitglieder)
-- /sc hinzugefügt (Chat unter Staatsfraktionen)
-- /revive SPIELER nun zu /revive geändert
-- Fraktionsfahrzeuge können nun abgeschlossen werden
-- Man muss nun im Dienst sein um die Funktionen der Fraktion nutzen zu können
-- Bugfixes & Performance Verbesserungen
+- Polizei Computer ein wenig verändert
+- Buy-/Sellhouse überarbeitet und Performance gesteigert durch weniger Abfragen mit einer Schleife
+- Keine Rechte mehr nach dem registrieren
 
 Was beim nächsten Update erwartet wird:
+
 - Gefangene kriegen eigene Klamotten
 - FIB wird fertiggestellt
 - Waffenladen wird hinzugefügt

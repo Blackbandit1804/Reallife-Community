@@ -34,8 +34,6 @@ namespace Roleplay.Player
             c.SendNotification("Payday: " + c.GetData("PlayerPaydayTimer"));
         }
 
-        public static int PaydayTimerIntervall = 1;
-
         #region PayDay
         public static void OnStartPayday(Client c) //Timer starten
         {
@@ -43,7 +41,7 @@ namespace Roleplay.Player
             {
                 while (true)
                 {
-                    Task.Delay(PaydayTimerIntervall * 60 * 1000).Wait();
+                    Task.Delay(1 * 60 * 1000).Wait();
 
                     Task PaydayTimer = Task.Run(() =>
                     {
